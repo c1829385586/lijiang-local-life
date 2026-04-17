@@ -1,0 +1,30 @@
+<!--pages/travel/travel.wxml-->
+<view class="travel-page">
+  <view class="header-bar">
+    <view class="search-wrap">
+      <input class="search-input" placeholder="搜索景点、游玩项目" bindinput="onSearchInput" bindconfirm="onSearch" value="{{keyword}}"/>
+    </view>
+  </view>
+  <view class="travel-list">
+    <view class="travel-card card" wx:for="{{travels}}" wx:key="_id" bindtap="goDetail" data-id="{{item._id}}">
+      <image class="travel-img" src="{{item.coverImage}}" mode="aspectFill"/>
+      <view class="travel-info">
+        <text class="travel-name">{{item.name}}</text>
+        <text class="travel-desc ellipsis2">{{item.description}}</text>
+        <view class="flex-between">
+          <text class="price">{{item.price || '免费'}}</text>
+          <view class="flex">
+            <text class="travel-score">⭐{{item.score || '4.8'}}</text>
+            <text class="travel-distance">{{item.distance || ''}}</text>
+          </view>
+        </view>
+        <view class="travel-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:if="{{!loading && !travels.length}}">
+    <text class="empty-icon">🏞️</text><text class="empty-text">暂无游玩推荐</text>
+  </view>
+</view>

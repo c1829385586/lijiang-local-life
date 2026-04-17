@@ -1,0 +1,250 @@
+.mine-page {
+  background: #F7F3EE;
+  min-height: 100vh;
+  padding-bottom: 60rpx;
+}
+
+/* ====== 顶部头像区 - 丽江山水色调 ====== */
+.mine-header {
+  background: linear-gradient(160deg, #8BADD4 0%, #A8C4D8 30%, #E8C9A0 70%, #E8A87C 100%);
+  padding: 60rpx 40rpx 80rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-bg-decor {
+  position: absolute;
+  bottom: -10rpx;
+  left: 0;
+  right: 0;
+  height: 40rpx;
+  background: #F7F3EE;
+  border-radius: 40rpx 40rpx 0 0;
+}
+
+.mine-header-content {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.avatar-wrap {
+  position: relative;
+  margin-right: 28rpx;
+}
+
+.mine-avatar {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 50%;
+  border: 6rpx solid rgba(255,255,255,0.8);
+}
+
+.avatar-ring {
+  position: absolute;
+  top: -8rpx;
+  left: -8rpx;
+  right: -8rpx;
+  bottom: -8rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255,255,255,0.3);
+}
+
+.mine-name {
+  color: #fff;
+  font-size: 38rpx;
+  font-weight: bold;
+  display: block;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.mine-slogan {
+  color: rgba(255,255,255,0.85);
+  font-size: 24rpx;
+  margin-top: 8rpx;
+  display: block;
+  letter-spacing: 2rpx;
+}
+
+/* ====== 商户入口 ====== */
+.merchant-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -30rpx 30rpx 0;
+  padding: 28rpx 30rpx;
+  background: linear-gradient(135deg, #5D6D7E, #6B7F94);
+  border-radius: 20rpx;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 8rpx 24rpx rgba(93,109,126,0.3);
+}
+
+.merchant-entry-left {
+  display: flex;
+  align-items: center;
+}
+
+.merchant-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255,255,255,0.15);
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.merchant-entry-icon {
+  font-size: 36rpx;
+}
+
+.merchant-entry-title {
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: bold;
+  display: block;
+}
+
+.merchant-entry-desc {
+  color: rgba(255,255,255,0.65);
+  font-size: 22rpx;
+  margin-top: 4rpx;
+}
+
+.merchant-entry .menu-arrow {
+  color: rgba(255,255,255,0.4);
+  font-size: 36rpx;
+}
+
+/* ====== 区块通用 ====== */
+.mine-section {
+  margin: 24rpx 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 28rpx 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.04);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3D3426;
+}
+
+.section-more {
+  font-size: 24rpx;
+  color: #B5AFA6;
+}
+
+/* ====== 订单状态网格 ====== */
+.order-status-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 12rpx 0;
+}
+
+.order-status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-icon-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+
+.status-icon-wrap.pending { background: #FFF6ED; }
+.status-icon-wrap.paid { background: #EDFAF0; }
+.status-icon-wrap.completed { background: #F0F0FF; }
+.status-icon-wrap.cancelled { background: #FFF0F0; }
+
+.status-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.status-name {
+  font-size: 22rpx;
+  color: #7A7570;
+}
+
+/* ====== 菜单列表 ====== */
+.menu-section {
+  padding: 8rpx 24rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #F0EDE8;
+}
+
+.menu-item.no-border {
+  border-bottom: none;
+}
+
+.menu-item-left {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon-wrap {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.menu-icon-wrap.addr { background: #EDF6FC; }
+.menu-icon-wrap.order { background: #FFF6ED; }
+.menu-icon-wrap.cart { background: #EDFAF0; }
+.menu-icon-wrap.service { background: #F0F0FF; }
+.menu-icon-wrap.about { background: #FFF8E8; }
+
+.menu-icon {
+  width: 34rpx;
+  height: 34rpx;
+}
+
+.menu-text {
+  font-size: 28rpx;
+  color: #3D3426;
+}
+
+.menu-arrow {
+  color: #D4CFC6;
+  font-size: 32rpx;
+}
+
+/* ====== 底部装饰 ====== */
+.footer-decor {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+.footer-text {
+  font-size: 22rpx;
+  color: #C4BDB4;
+  letter-spacing: 4rpx;
+}

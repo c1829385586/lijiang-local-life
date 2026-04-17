@@ -1,0 +1,55 @@
+<!--pages/merchant-product-edit/merchant-product-edit.wxml-->
+<view class="product-edit-page">
+  <view class="form-card">
+    <text class="form-title">{{isEdit ? '编辑商品' : '添加商品'}}</text>
+    <view class="form-item">
+      <text class="form-label">商品名称 *</text>
+      <input class="form-input" placeholder="如：手工腊肉、本地蜂蜜" bindinput="onInput" data-field="name" value="{{form.name}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">商品分类</text>
+      <picker mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+        <view class="form-picker {{form.category ? '' : 'placeholder'}}">{{form.category || '选择分类'}}</view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">售价 *</text>
+      <input class="form-input" placeholder="0.00" type="digit" bindinput="onInput" data-field="price" value="{{form.price}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">原价</text>
+      <input class="form-input" placeholder="划线价（选填）" type="digit" bindinput="onInput" data-field="originalPrice" value="{{form.originalPrice}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">库存 *</text>
+      <input class="form-input" placeholder="库存数量" type="number" bindinput="onInput" data-field="stock" value="{{form.stock}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">商品描述</text>
+      <textarea class="form-textarea" placeholder="描述一下这个商品" bindinput="onInput" data-field="description" value="{{form.description}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">商品图片 *</text>
+      <view class="upload-grid">
+        <view class="upload-item" wx:for="{{form.images}}" wx:key="*this">
+          <image src="{{item}}" mode="aspectFill" class="upload-img"/>
+          <text class="upload-delete" catchtap="deleteImage" data-index="{{index}}">✕</text>
+        </view>
+        <view class="upload-add" wx:if="{{form.images.length < 9}}" bindtap="chooseImage">
+          <text>+</text><text>添加</text>
+        </view>
+      </view>
+    </view>
+    <view class="form-item">
+      <view class="flex-between">
+        <text class="form-label">可送到房间</text>
+        <switch checked="{{form.canDeliverToRoom}}" bindchange="toggleDeliver" color="#FF6B35"/>
+      </view>
+      <text class="form-hint">开启后，住客可在酒店详情页直接选购</text>
+    </view>
+    <view class="btn-primary {{loading ? 'disabled' : ''}}" bindtap="onSubmit">
+      <text wx:if="{{!loading}}">{{isEdit ? '保存修改' : '添加商品'}}</text>
+      <text wx:else>保存中...</text>
+    </view>
+  </view>
+</view>

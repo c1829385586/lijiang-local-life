@@ -1,0 +1,21 @@
+.map-page { position: relative; height: 100vh; }
+.explore-map { width: 100%; height: 100%; }
+
+.locate-btn { position: absolute; right: 30rpx; bottom: 240rpx; width: 80rpx; height: 80rpx; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.15); }
+
+.filter-bar { position: absolute; top: 0; left: 0; right: 0; display: flex; background: rgba(255,255,255,0.95); padding: 12rpx 20rpx; z-index: 10; }
+.filter-item { padding: 12rpx 28rpx; font-size: 26rpx; color: #666; border-radius: 24rpx; margin-right: 12rpx; }
+.filter-item.active { background: #E8885A; color: #fff; }
+
+.store-detail { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-radius: 24rpx 24rpx 0 0; padding: 24rpx; transform: translateY(100%); transition: transform 0.3s; box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.1); z-index: 20; }
+.store-detail.show { transform: translateY(0); }
+
+.detail-header { display: flex; }
+.detail-img { width: 180rpx; height: 180rpx; border-radius: 16rpx; flex-shrink: 0; }
+.detail-info { flex: 1; margin-left: 20rpx; display: flex; flex-direction: column; justify-content: center; }
+.detail-name { font-size: 32rpx; font-weight: bold; }
+.detail-type { font-size: 22rpx; color: #E8885A; background: #FFF3ED; padding: 2rpx 10rpx; border-radius: 6rpx; margin-top: 8rpx; display: inline-block; width: fit-content; }
+.detail-addr { font-size: 22rpx; color: #999; margin-top: 8rpx; }
+.detail-btn { background: #E8885A; color: #fff; font-size: 24rpx; padding: 10rpx 24rpx; border-radius: 24rpx; }
+
+.close-btn { position: absolute; top: 20rpx; right: 24rpx; font-size: 32rpx; color: #999; }

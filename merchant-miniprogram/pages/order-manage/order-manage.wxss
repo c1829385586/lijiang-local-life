@@ -1,0 +1,30 @@
+.order-manage-page { background: #f5f5f5; min-height: 100vh; }
+.order-tabs { white-space: nowrap; background: #fff; padding: 0 24rpx; border-bottom: 1rpx solid #eee; position: sticky; top: 0; z-index: 10; }
+.tab-item { display: inline-block; padding: 20rpx 24rpx; font-size: 28rpx; color: #666; position: relative; }
+.tab-item.active { color: #2C3E50; font-weight: bold; }
+.tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 40rpx; height: 4rpx; background: #2C3E50; border-radius: 2rpx; }
+.badge { position: absolute; top: 4rpx; right: 0; background: #FF3B30; color: #fff; font-size: 18rpx; min-width: 28rpx; height: 28rpx; border-radius: 14rpx; display: flex; align-items: center; justify-content: center; padding: 0 6rpx; }
+.order-card { margin-top: 16rpx !important; }
+.order-header { margin-bottom: 12rpx; }
+.order-type-tag { font-size: 20rpx; padding: 4rpx 10rpx; border-radius: 6rpx; margin-right: 12rpx; }
+.order-type-tag.hotel { background: #E8F4FD; color: #007AFF; }
+.order-type-tag.food { background: #FFF3ED; color: #FF6B35; }
+.order-type-tag.product { background: #F0F0FF; color: #5856D6; }
+.order-type-tag.travel { background: #E8F8E8; color: #4CD964; }
+.order-no { font-size: 22rpx; color: #999; }
+.order-status { font-size: 24rpx; }
+.order-status.pending { color: #FF9500; }
+.order-status.paid { color: #4CD964; }
+.order-status.completed { color: #999; }
+.order-status.cancelled, .order-status.rejected { color: #ccc; }
+.order-body { display: flex; margin: 12rpx 0; }
+.order-img { width: 140rpx; height: 140rpx; border-radius: 12rpx; flex-shrink: 0; }
+.order-info { flex: 1; margin-left: 16rpx; display: flex; flex-direction: column; justify-content: space-between; }
+.order-name { font-size: 28rpx; font-weight: bold; }
+.order-detail { font-size: 24rpx; color: #666; }
+.order-customer { font-size: 24rpx; color: #666; }
+.order-address { font-size: 24rpx; color: #666; }
+.order-address .block { display: block; }
+.order-footer { padding-top: 12rpx; border-top: 1rpx solid #f0f0f0; }
+.btn-sm { padding: 8rpx 24rpx; border: 1rpx solid #2C3E50; border-radius: 24rpx; font-size: 24rpx; margin-left: 12rpx; color: #2C3E50; display: inline-block; }
+.btn-sm.danger { color: #FF3B30; border-color: #FF3B30; }

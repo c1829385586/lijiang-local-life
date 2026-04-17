@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/dashboard/dashboard",
+    "pages/store-edit/store-edit",
+    "pages/room-manage/room-manage",
+    "pages/room-edit/room-edit",
+    "pages/product-manage/product-manage",
+    "pages/product-edit/product-edit",
+    "pages/order-manage/order-manage",
+    "pages/order-detail/order-detail",
+    "pages/stats/stats",
+    "pages/login/login",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2C3E50",
+    "navigationBarTitleText": "商户中心",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#2C3E50",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/dashboard/dashboard",
+        "text": "工作台",
+        "iconPath": "images/tab/dashboard.png",
+        "selectedIconPath": "images/tab/dashboard-active.png"
+      },
+      {
+        "pagePath": "pages/order-manage/order-manage",
+        "text": "订单",
+        "iconPath": "images/tab/order.png",
+        "selectedIconPath": "images/tab/order-active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "数据",
+        "iconPath": "images/tab/stats.png",
+        "selectedIconPath": "images/tab/stats-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/mine.png",
+        "selectedIconPath": "images/tab/mine-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

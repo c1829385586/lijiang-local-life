@@ -1,0 +1,10 @@
+.address-page { padding-bottom: 120rpx; }
+.address-card { margin-bottom: 0 !important; }
+.addr-name { font-size: 30rpx; font-weight: bold; margin-right: 16rpx; }
+.addr-phone { font-size: 28rpx; color: #666; }
+.addr-default { font-size: 22rpx; color: #FF6B35; background: #FFF3ED; padding: 2rpx 10rpx; border-radius: 6rpx; margin-left: 12rpx; }
+.addr-detail { font-size: 26rpx; color: #666; margin: 12rpx 0; display: block; }
+.addr-actions { font-size: 24rpx; padding-top: 12rpx; border-top: 1rpx solid #f0f0f0; }
+.addr-edit { color: #FF6B35; margin-right: 24rpx; }
+.addr-delete { color: #999; }
+.add-btn { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; border-radius: 0; padding: 24rpx; padding-bottom: calc(24rpx + env(safe-area-inset-bottom)); }

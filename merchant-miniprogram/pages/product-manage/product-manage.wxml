@@ -1,0 +1,40 @@
+<!--pages/product-manage/product-manage.wxml-->
+<view class="product-manage-page">
+  <view class="page-header">
+    <text class="page-title">商品管理</text>
+    <view class="btn-primary btn-sm" bindtap="addProduct">+ 添加商品</view>
+  </view>
+
+  <view class="product-list" wx:if="{{products.length}}">
+    <view class="product-card card" wx:for="{{products}}" wx:key="_id">
+      <view class="flex">
+        <image class="product-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <view class="product-info">
+          <text class="product-name">{{item.name}}</text>
+          <text class="product-desc ellipsis">{{item.description}}</text>
+          <view class="flex-between">
+            <text class="price">{{item.price}}</text>
+            <text class="product-stock">库存: {{item.stock}}</text>
+          </view>
+          <view class="product-tags">
+            <text class="tag" wx:if="{{item.canDeliverToRoom}}">可送到房间</text>
+            <text class="tag" wx:if="{{item.sales > 0}}">已售{{item.sales}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="product-actions">
+        <view class="action-btn" bindtap="editProduct" data-id="{{item._id}}">编辑</view>
+        <view class="action-btn" bindtap="toggleStatus" data-id="{{item._id}}" data-status="{{item.status}}">
+          {{item.status === 1 ? '下架' : '上架'}}
+        </view>
+        <view class="action-btn danger" bindtap="deleteProduct" data-id="{{item._id}}">删除</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !products.length}}">
+    <text class="empty-icon">📦</text>
+    <text class="empty-text">暂无商品</text>
+    <view class="btn-primary" bindtap="addProduct" style="margin-top:30rpx">添加第一个商品</view>
+  </view>
+</view>

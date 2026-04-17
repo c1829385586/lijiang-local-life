@@ -1,0 +1,8 @@
+.product-grid { display: flex; flex-wrap: wrap; padding: 16rpx; }
+.product-card { width: calc(50% - 16rpx); margin: 8rpx; background: #fff; border-radius: 16rpx; overflow: hidden; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
+.product-img { width: 100%; height: 320rpx; }
+.product-info { padding: 16rpx; }
+.product-name { font-size: 28rpx; font-weight: bold; display: block; }
+.product-original { font-size: 22rpx; color: #999; text-decoration: line-through; }
+.product-sales { font-size: 22rpx; color: #999; }
+.product-deliver { font-size: 20rpx; color: #FF6B35; background: #FFF3ED; padding: 2rpx 8rpx; border-radius: 6rpx; }

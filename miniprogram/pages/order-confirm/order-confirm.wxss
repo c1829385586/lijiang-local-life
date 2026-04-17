@@ -1,0 +1,22 @@
+.order-confirm { padding-bottom: 120rpx; }
+.address-card { border-left: 6rpx solid #FF6B35; }
+.addr-name { font-size: 30rpx; font-weight: bold; margin-right: 16rpx; }
+.addr-phone { font-size: 28rpx; color: #666; }
+.addr-detail { font-size: 26rpx; color: #666; display: block; margin-top: 8rpx; }
+.info-row { display: flex; align-items: center; padding: 16rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.info-row:last-child { border-bottom: none; }
+.info-label { width: 140rpx; font-size: 28rpx; color: #666; }
+.info-value { flex: 1; font-size: 28rpx; }
+.info-input { flex: 1; font-size: 28rpx; }
+.order-item { display: flex; align-items: center; }
+.order-img { width: 140rpx; height: 140rpx; border-radius: 12rpx; flex-shrink: 0; }
+.order-info { flex: 1; margin-left: 16rpx; }
+.order-name { font-size: 28rpx; font-weight: bold; display: block; }
+.order-desc { font-size: 24rpx; color: #666; display: block; }
+.order-qty { font-size: 24rpx; color: #999; }
+.remark-input { width: 100%; height: 120rpx; font-size: 26rpx; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); }
+.bottom-price { display: flex; align-items: baseline; }
+.price.big { font-size: 40rpx; }
+.label { font-size: 22rpx; color: #999; }
+.disabled { opacity: 0.5; }

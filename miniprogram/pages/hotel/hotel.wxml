@@ -1,0 +1,40 @@
+<!--pages/hotel/hotel.wxml-->
+<view class="hotel-page">
+  <view class="header-bar">
+    <view class="search-wrap">
+      <input class="search-input" placeholder="搜索酒店民宿" bindinput="onSearchInput" bindconfirm="onSearch" value="{{keyword}}"/>
+    </view>
+    <view class="filter-bar">
+      <view class="filter-item {{sortBy === 'score' ? 'active' : ''}}" bindtap="setSort" data-sort="score">好评优先</view>
+      <view class="filter-item {{sortBy === 'price_asc' ? 'active' : ''}}" bindtap="setSort" data-sort="price_asc">价格低到高</view>
+      <view class="filter-item {{sortBy === 'price_desc' ? 'active' : ''}}" bindtap="setSort" data-sort="price_desc">价格高到低</view>
+      <view class="filter-item {{sortBy === 'distance' ? 'active' : ''}}" bindtap="setSort" data-sort="distance">距离最近</view>
+    </view>
+  </view>
+
+  <view class="hotel-list">
+    <view class="hotel-card card" wx:for="{{hotels}}" wx:key="_id" bindtap="goDetail" data-id="{{item._id}}">
+      <image class="hotel-img" src="{{item.coverImage}}" mode="aspectFill"/>
+      <view class="hotel-info">
+        <view class="flex-between">
+          <text class="hotel-name">{{item.name}}</text>
+          <text class="price">{{item.minPrice}}<text class="price-unit">起</text></text>
+        </view>
+        <view class="hotel-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view class="flex-between">
+          <text class="hotel-score">⭐ {{item.score || '4.8'}}分</text>
+          <text class="hotel-distance">{{item.distance || ''}}</text>
+        </view>
+        <text class="hotel-addr ellipsis">{{item.address}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !hotels.length}}">
+    <text class="empty-icon">🏨</text>
+    <text class="empty-text">暂无酒店</text>
+  </view>
+  <view class="loading-more" wx:if="{{loading}}">加载中...</view>
+</view>

@@ -1,0 +1,32 @@
+<!--pages/map-explore/map-explore.wxml-->
+<view class="map-page">
+  <!-- 地图 -->
+  <map class="explore-map" latitude="{{latitude}}" longitude="{{longitude}}" markers="{{markers}}" scale="14" show-location bindmarkertap="onMarkerTap">
+    <cover-view class="locate-btn" bindtap="locateMe">📍</cover-view>
+  </map>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-item {{typeFilter === 'all' ? 'active' : ''}}" bindtap="filterType" data-type="all">全部</view>
+    <view class="filter-item {{typeFilter === 'hotel' ? 'active' : ''}}" bindtap="filterType" data-type="hotel">酒店</view>
+    <view class="filter-item {{typeFilter === 'food' ? 'active' : ''}}" bindtap="filterType" data-type="food">美食</view>
+    <view class="filter-item {{typeFilter === 'travel' ? 'active' : ''}}" bindtap="filterType" data-type="travel">游玩</view>
+  </view>
+
+  <!-- 店铺详情弹出 -->
+  <view class="store-detail {{listVisible ? 'show' : ''}}" wx:if="{{currentStore._id}}">
+    <view class="detail-header">
+      <image class="detail-img" src="{{currentStore.coverImage}}" mode="aspectFill"/>
+      <view class="detail-info">
+        <text class="detail-name">{{currentStore.name}}</text>
+        <text class="detail-type">{{typeMap[currentStore.type]}}</text>
+        <text class="detail-addr ellipsis">{{currentStore.address}}</text>
+        <view class="flex-between" style="margin-top:12rpx">
+          <text class="price">{{currentStore.minPrice || currentStore.price || '免费'}}</text>
+          <view class="detail-btn" bindtap="goDetail" data-type="{{currentStore.type}}" data-id="{{currentStore._id}}">查看详情 ></view>
+        </view>
+      </view>
+    </view>
+    <text class="close-btn" bindtap="hideDetail">✕</text>
+  </view>
+</view>

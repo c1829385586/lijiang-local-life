@@ -1,0 +1,42 @@
+<!--pages/search/search.wxml-->
+<view class="search-page">
+  <view class="search-bar">
+    <input class="search-input" focus placeholder="搜索美食、酒店、景点、特产" bindinput="onInput" bindconfirm="onSearch" value="{{keyword}}"/>
+    <text class="search-cancel" bindtap="goBack">取消</text>
+  </view>
+
+  <!-- 分类筛选 -->
+  <view class="type-tabs" wx:if="{{keyword}}">
+    <view class="type-tab {{currentType === item.key ? 'active' : ''}}" wx:for="{{typeTabs}}" wx:key="key" bindtap="switchType" data-type="{{item.key}}">{{item.name}}</view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="hot-search" wx:if="{{!results.length && !keyword}}">
+    <text class="section-title">热门搜索</text>
+    <view class="hot-tags">
+      <text class="hot-tag" wx:for="{{hotTags}}" wx:key="*this" bindtap="searchTag" data-tag="{{item}}">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results">
+    <view class="result-item card" wx:for="{{results}}" wx:key="_id" bindtap="goDetail" data-type="{{item.type}}" data-id="{{item._id}}">
+      <image class="result-img" src="{{item.coverImage}}" mode="aspectFill"/>
+      <view class="result-info">
+        <view class="flex">
+          <text class="result-name">{{item.name}}</text>
+          <text class="hot-label" wx:if="{{item.hotLabel}}">{{item.hotLabel}}</text>
+        </view>
+        <text class="result-desc ellipsis">{{item.description}}</text>
+        <view class="flex-between">
+          <text class="price">{{item.minPrice || item.price || ''}}</text>
+          <text class="result-type">{{typeMap[item.type]}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{keyword && !loading && !results.length}}">
+    <text class="empty-icon">🔍</text><text class="empty-text">未找到相关结果</text>
+  </view>
+</view>

@@ -1,0 +1,13 @@
+{
+    "functions":  [
+                      {
+                          "runtime":  "Nodejs16.13",
+                          "handler":  "index.main",
+                          "name":  "admin",
+                          "httpPath":  "/admin",
+                          "timeout":  10
+                      }
+                  ],
+    "functionRoot":  "cloudfunctions",
+    "envId":  "cloud1-5gtgqlar51205e68"
+}

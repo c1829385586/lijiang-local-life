@@ -1,0 +1,71 @@
+<!--pages/merchant-login/merchant-login.wxml-->
+<view class="login-page">
+  <view class="login-header">
+    <text class="login-title">商户入驻</text>
+    <text class="login-subtitle">开启本地生活之旅</text>
+  </view>
+
+  <view class="form-card">
+    <view class="form-item">
+      <text class="form-label">店铺名称 *</text>
+      <input class="form-input" placeholder="如：山间民宿、老王烧烤" bindinput="onInput" data-field="name" value="{{form.name}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">店铺类型 *</text>
+      <picker mode="selector" range="{{typeOptions}}" bindchange="onTypeChange">
+        <view class="form-picker {{form.type ? '' : 'placeholder'}}">
+          {{typeMap[form.type] || '请选择店铺类型'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">联系人 *</text>
+      <input class="form-input" placeholder="负责人姓名" bindinput="onInput" data-field="contactName" value="{{form.contactName}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">联系电话 *</text>
+      <input class="form-input" placeholder="手机号" type="number" maxlength="11" bindinput="onInput" data-field="phone" value="{{form.phone}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">店铺地址 *</text>
+      <view class="form-location" bindtap="chooseLocation">
+        <text wx:if="{{form.address}}" class="form-location-text">{{form.address}}</text>
+        <text wx:else class="form-location-placeholder">点击选择位置</text>
+        <text class="form-location-icon">📍</text>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">店铺简介</text>
+      <textarea class="form-textarea" placeholder="介绍一下你的店铺" bindinput="onInput" data-field="description" value="{{form.description}}"/>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">店铺图片</text>
+      <view class="upload-grid">
+        <view class="upload-item" wx:for="{{form.images}}" wx:key="*this">
+          <image src="{{item}}" mode="aspectFill" class="upload-img"/>
+          <text class="upload-delete" bindtap="deleteImage" data-index="{{index}}">✕</text>
+        </view>
+        <view class="upload-add" wx:if="{{form.images.length < 9}}" bindtap="chooseImage">
+          <text>+</text>
+          <text>添加图片</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-agreement">
+      <checkbox checked="{{agreed}}" bindchange="toggleAgreement" color="#FF6B35"/>
+      <text>我已阅读并同意《商户服务协议》</text>
+    </view>
+
+    <view class="btn-primary {{loading ? 'disabled' : ''}}" bindtap="onSubmit">
+      <text wx:if="{{!loading}}">{{isEdit ? '保存修改' : '提交入驻'}}</text>
+      <text wx:else>提交中...</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,51 @@
+<!--pages/food-detail/food-detail.wxml-->
+<view class="food-detail">
+  <swiper class="detail-swiper" indicator-dots>
+    <swiper-item wx:for="{{store.images}}" wx:key="*this">
+      <image src="{{item}}" mode="aspectFill" class="detail-img" bindtap="previewImage" data-urls="{{store.images}}" data-current="{{index}}"/>
+    </swiper-item>
+  </swiper>
+
+  <view class="card">
+    <view class="flex-between">
+      <text class="store-name">{{store.name}}</text>
+      <view class="flex">
+        <text class="score-text">⭐{{store.score || '4.8'}}</text>
+      </view>
+    </view>
+    <view class="flex" style="margin-top:12rpx">
+      <text class="price">{{store.avgPrice || store.minPrice}}</text>
+      <text style="font-size:22rpx;color:#999;margin-left:4rpx">/人均</text>
+    </view>
+    <view class="store-tags">
+      <text class="tag" wx:for="{{store.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="store-address flex" bindtap="openMap">
+      <text>📍 {{store.address}}</text>
+      <text class="address-nav">导航 ></text>
+    </view>
+    <view class="flex" style="margin-top:12rpx" wx:if="{{store.phone}}">
+      <text>📞 {{store.phone}}</text>
+      <text class="address-nav" bindtap="callPhone">拨打 ></text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{store.description}}">
+    <text class="card-title">商家介绍</text>
+    <text class="store-desc">{{store.description}}</text>
+  </view>
+
+  <view class="card" wx:if="{{store.recommendDishes && store.recommendDishes.length}}">
+    <text class="card-title">推荐菜品</text>
+    <view class="dish-list">
+      <view class="dish-item" wx:for="{{store.recommendDishes}}" wx:key="name">
+        <text class="dish-name">{{item.name}}</text>
+        <text class="price">{{item.price}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn-primary" bindtap="openMap" style="flex:1">导航到店</view>
+  </view>
+</view>

@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/hotel/hotel",
+    "pages/food/food",
+    "pages/travel/travel",
+    "pages/product/product",
+    "pages/mine/mine",
+    "pages/order/order",
+    "pages/order-confirm/order-confirm",
+    "pages/address/address",
+    "pages/search/search",
+    "pages/store-detail/store-detail",
+    "pages/hotel-detail/hotel-detail",
+    "pages/food-detail/food-detail",
+    "pages/travel-detail/travel-detail",
+    "pages/cart/cart",
+    "pages/coupon/coupon",
+    "pages/map-explore/map-explore",
+    "pages/merchant-login/merchant-login",
+    "pages/merchant-dashboard/merchant-dashboard",
+    "pages/merchant-store-edit/merchant-store-edit",
+    "pages/merchant-room-manage/merchant-room-manage",
+    "pages/merchant-room-edit/merchant-room-edit",
+    "pages/merchant-product-manage/merchant-product-manage",
+    "pages/merchant-product-edit/merchant-product-edit",
+    "pages/merchant-order-manage/merchant-order-manage",
+    "pages/merchant-order-detail/merchant-order-detail",
+    "pages/merchant-stats/merchant-stats",
+    "pages/merchant-profile/merchant-profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FF6B35",
+    "navigationBarTitleText": "本地生活",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#FF6B35",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/hotel/hotel",
+        "text": "酒店民宿"
+      },
+      {
+        "pagePath": "pages/food/food",
+        "text": "美食"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

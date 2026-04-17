@@ -1,0 +1,73 @@
+<!--pages/order-confirm/order-confirm.wxml-->
+<view class="order-confirm">
+  <!-- 收货地址（特产/零食） -->
+  <view class="card address-card" wx:if="{{orderData.type === 'product'}}" bindtap="chooseAddress">
+    <view wx:if="{{address}}">
+      <view class="flex">
+        <text class="addr-name">{{address.userName}}</text>
+        <text class="addr-phone">{{address.telNumber}}</text>
+      </view>
+      <text class="addr-detail">{{address.provinceName}}{{address.cityName}}{{address.countyName}}{{address.detailInfo}}</text>
+    </view>
+    <view wx:else class="flex-center" style="padding:30rpx;">
+      <text>+ 请选择收货地址</text>
+    </view>
+  </view>
+
+  <!-- 入住信息（酒店） -->
+  <view class="card" wx:if="{{orderData.type === 'hotel'}}">
+    <text class="card-title">入住信息</text>
+    <view class="info-row">
+      <text class="info-label">入住日期</text>
+      <text class="info-value">{{orderData.checkInDate}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">退房日期</text>
+      <text class="info-value">{{orderData.checkOutDate}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">入住天数</text>
+      <text class="info-value">{{orderData.nights}}晚</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">入住人</text>
+      <input class="info-input" placeholder="请输入入住人姓名" bindinput="onGuestInput" value="{{guestName}}"/>
+    </view>
+    <view class="info-row">
+      <text class="info-label">手机号</text>
+      <input class="info-input" placeholder="请输入手机号" type="number" bindinput="onPhoneInput" value="{{guestPhone}}"/>
+    </view>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="card">
+    <text class="card-title">订单详情</text>
+    <view class="order-item">
+      <image class="order-img" src="{{orderData.coverImage}}" mode="aspectFill"/>
+      <view class="order-info">
+        <text class="order-name">{{orderData.storeName || orderData.productName}}</text>
+        <text class="order-desc" wx:if="{{orderData.roomName}}">{{orderData.roomName}}</text>
+        <text class="order-qty" wx:if="{{orderData.quantity}}">x{{orderData.quantity}}</text>
+      </view>
+      <text class="price">{{orderData.totalPrice}}</text>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="card">
+    <text class="card-title">备注</text>
+    <textarea class="remark-input" placeholder="有什么要告诉商家的（选填）" bindinput="onRemarkInput" value="{{remark}}"/>
+  </view>
+
+  <!-- 底部支付栏 -->
+  <view class="bottom-bar">
+    <view class="bottom-price">
+      <text class="label">应付：</text>
+      <text class="price big">{{orderData.totalPrice}}</text>
+    </view>
+    <view class="btn-primary {{loading ? 'disabled' : ''}}" bindtap="onPay">
+      <text wx:if="{{!loading}}">微信支付</text>
+      <text wx:else>支付中...</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+{
+    "functions":  [
+                      {
+                          "name":  "admin",
+                          "triggers":  [
+                                           {
+                                               "config":  "{\"methods\":[\"GET\",\"POST\"],\"path\":\"/admin\"}",
+                                               "name":  "http-admin",
+                                               "type":  "http"
+                                           }
+                                       ]
+                      }
+                  ],
+    "envId":  "cloud1-5gtgqlar51205e68"
+}

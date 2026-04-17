@@ -1,0 +1,36 @@
+<!--pages/merchant-room-edit/merchant-room-edit.wxml-->
+<view class="room-edit-page">
+  <view class="form-card">
+    <text class="form-title">{{isEdit ? '编辑房型' : '添加房型'}}</text>
+    <view class="form-item">
+      <text class="form-label">房型名称 *</text>
+      <input class="form-input" placeholder="如：大床房、标间、亲子房" bindinput="onInput" data-field="name" value="{{form.name}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">价格/晚 *</text>
+      <input class="form-input" placeholder="0.00" type="digit" bindinput="onInput" data-field="price" value="{{form.price}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">库存 *</text>
+      <input class="form-input" placeholder="可用房间数" type="number" bindinput="onInput" data-field="stock" value="{{form.stock}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">房型描述</text>
+      <textarea class="form-textarea" placeholder="面积、床型、设施等" bindinput="onInput" data-field="description" value="{{form.description}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">房型图片 *</text>
+      <view class="upload-grid">
+        <view class="upload-item" wx:if="{{form.image}}">
+          <image src="{{form.image}}" mode="aspectFill" class="upload-img"/>
+        </view>
+        <view class="upload-add" wx:if="{{!form.image}}" bindtap="chooseImage">
+          <text>+</text><text>添加</text>
+        </view>
+      </view>
+    </view>
+    <view class="btn-primary {{loading ? 'disabled' : ''}}" bindtap="onSubmit">
+      {{isEdit ? '保存修改' : '添加房型'}}
+    </view>
+  </view>
+</view>

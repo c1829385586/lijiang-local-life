@@ -1,0 +1,38 @@
+<!--pages/store-detail/store-detail.wxml-->
+<view class="store-detail">
+  <swiper class="detail-swiper" indicator-dots>
+    <swiper-item wx:for="{{item.images || [item.coverImage]}}" wx:key="*this">
+      <image src="{{item}}" mode="aspectFill" class="detail-img" bindtap="previewImage" data-urls="{{item.images || [item.coverImage]}}" data-current="{{index}}"/>
+    </swiper-item>
+  </swiper>
+
+  <view class="card">
+    <text class="store-name">{{item.name}}</text>
+    <view class="flex-between" style="margin-top:12rpx">
+      <view class="flex">
+        <text class="price">{{item.price}}</text>
+        <text class="product-original" wx:if="{{item.originalPrice}}">¥{{item.originalPrice}}</text>
+      </view>
+      <text class="product-sales">已售{{item.sales || 0}}</text>
+    </view>
+    <view class="product-deliver" wx:if="{{item.canDeliverToRoom}}">
+      🏨 支持送到酒店房间
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">商品详情</text>
+    <text class="store-desc">{{item.description}}</text>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="flex" style="flex:1">
+      <view class="buy-qty">
+        <text class="qty-btn" bindtap="decreaseQty">-</text>
+        <text class="qty-num">{{quantity}}</text>
+        <text class="qty-btn" bindtap="increaseQty">+</text>
+      </view>
+      <view class="btn-primary" bindtap="onBuyNow" style="flex:1;margin-left:20rpx">立即购买</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,91 @@
+<!--pages/home/home.wxml-->
+<view class="home-page">
+  <!-- 顶部定位+搜索 -->
+  <view class="home-header">
+    <view class="location-bar" bindtap="onChooseLocation">
+      <text class="location-icon">📍</text>
+      <text class="location-text ellipsis">{{locationText}}</text>
+      <text class="location-arrow">▼</text>
+    </view>
+    <view class="search-wrap">
+      <input class="search-input" placeholder="搜索美食、酒店、景点" bindinput="onSearchInput" bindconfirm="onSearch" value="{{searchKeyword}}"/>
+      <view class="search-btn" bindtap="onSearch">搜索</view>
+    </view>
+  </view>
+
+  <!-- Banner轮播 -->
+  <swiper class="banner-swiper" autoplay circular indicator-dots>
+    <swiper-item wx:for="{{banners}}" wx:key="_id">
+      <image class="banner-img" src="{{item.imageUrl}}" mode="aspectFill" bindtap="onBannerTap" data-url="{{item.linkUrl}}"/>
+    </swiper-item>
+  </swiper>
+
+  <!-- 分类入口 -->
+  <view class="category-grid">
+    <view class="category-item" wx:for="{{categories}}" wx:key="name" bindtap="onCategoryTap" data-page="{{item.page}}" data-tab="{{item.tab}}">
+      <image class="category-icon" src="{{item.icon}}" mode="aspectFit"/>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 推荐酒店民宿 -->
+  <view class="section" wx:if="{{recommendHotels.length}}">
+    <view class="section-header">
+      <text class="section-title">🏨 精选酒店民宿</text>
+      <text class="section-more" bindtap="onCategoryTap" data-page="/pages/hotel/hotel">更多 ></text>
+    </view>
+    <scroll-view scroll-x class="scroll-h">
+      <view class="hotel-card" wx:for="{{recommendHotels}}" wx:key="_id" bindtap="onHotelTap" data-id="{{item._id}}">
+        <image class="hotel-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <view class="hotel-info">
+          <text class="hotel-name ellipsis">{{item.name}}</text>
+          <view class="hotel-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+          </view>
+          <view class="flex-between">
+            <text class="price">{{item.minPrice}}</text>
+            <text class="hotel-score">{{item.score}}分</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 推荐美食 -->
+  <view class="section" wx:if="{{recommendFoods.length}}">
+    <view class="section-header">
+      <text class="section-title">🍜 周边美食</text>
+      <text class="section-more" bindtap="onCategoryTap" data-page="/pages/food/food">更多 ></text>
+    </view>
+    <view class="food-list">
+      <view class="food-card card" wx:for="{{recommendFoods}}" wx:key="_id" bindtap="onFoodTap" data-id="{{item._id}}">
+        <image class="food-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <view class="food-info">
+          <text class="food-name">{{item.name}}</text>
+          <text class="food-desc ellipsis">{{item.description}}</text>
+          <view class="flex-between">
+            <text class="price">{{item.avgPrice}}</text>
+            <text class="food-distance">{{item.distance || '1.2km'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 特产小零食（可送到房间） -->
+  <view class="section" wx:if="{{recommendProducts.length}}">
+    <view class="section-header">
+      <text class="section-title">🎁 特产零食 · 送到房间</text>
+    </view>
+    <scroll-view scroll-x class="scroll-h">
+      <view class="product-card" wx:for="{{recommendProducts}}" wx:key="_id" bindtap="onProductTap" data-id="{{item._id}}">
+        <image class="product-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <text class="product-name ellipsis">{{item.name}}</text>
+        <view class="flex-between">
+          <text class="price">{{item.price}}</text>
+          <text class="product-sales">已售{{item.sales || 0}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

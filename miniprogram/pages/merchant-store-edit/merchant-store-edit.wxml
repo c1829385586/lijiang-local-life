@@ -1,0 +1,45 @@
+<!--pages/merchant-store-edit/merchant-store-edit.wxml-->
+<view class="store-edit-page">
+  <view class="form-card">
+    <text class="form-title">店铺信息</text>
+    <view class="form-item">
+      <text class="form-label">店铺名称</text>
+      <input class="form-input" bindinput="onInput" data-field="name" value="{{form.name}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">联系电话</text>
+      <input class="form-input" type="number" bindinput="onInput" data-field="phone" value="{{form.phone}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">店铺地址</text>
+      <view class="form-location" bindtap="chooseLocation">
+        <text class="form-location-text">{{form.address || '点击选择'}}</text>
+        <text>📍</text>
+      </view>
+    </view>
+    <view class="form-item">
+      <text class="form-label">店铺简介</text>
+      <textarea class="form-textarea" bindinput="onInput" data-field="description" value="{{form.description}}"/>
+    </view>
+    <view class="form-item">
+      <text class="form-label">店铺标签</text>
+      <view class="tags-input">
+        <text class="tag" wx:for="{{form.tags}}" wx:key="*this">{{item}} <text class="tag-x" catchtap="removeTag" data-index="{{index}}">×</text></text>
+        <input class="tag-add-input" placeholder="输入标签回车添加" bindconfirm="addTag" value="{{newTag}}"/>
+      </view>
+    </view>
+    <view class="form-item">
+      <text class="form-label">店铺图片</text>
+      <view class="upload-grid">
+        <view class="upload-item" wx:for="{{form.images}}" wx:key="*this">
+          <image src="{{item}}" mode="aspectFill" class="upload-img"/>
+          <text class="upload-delete" catchtap="deleteImage" data-index="{{index}}">✕</text>
+        </view>
+        <view class="upload-add" wx:if="{{form.images.length < 9}}" bindtap="chooseImage">
+          <text>+</text><text>添加</text>
+        </view>
+      </view>
+    </view>
+    <view class="btn-primary {{loading ? 'disabled' : ''}}" bindtap="onSubmit">保存修改</view>
+  </view>
+</view>

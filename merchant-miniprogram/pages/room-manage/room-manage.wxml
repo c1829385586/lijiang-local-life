@@ -1,0 +1,32 @@
+<!--pages/room-manage/room-manage.wxml-->
+<view class="room-manage-page">
+  <view class="page-header">
+    <text class="page-title">房型管理</text>
+    <view class="btn-primary btn-sm" bindtap="addRoom">+ 添加房型</view>
+  </view>
+  <view class="room-list">
+    <view class="room-card card" wx:for="{{rooms}}" wx:key="_id">
+      <view class="flex">
+        <image class="room-img" src="{{item.image}}" mode="aspectFill"/>
+        <view class="room-info">
+          <text class="room-name">{{item.name}}</text>
+          <text class="room-desc ellipsis">{{item.description}}</text>
+          <view class="flex-between">
+            <text class="price">{{item.price}}/晚</text>
+            <text class="room-stock">库存: {{item.stock}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="room-actions">
+        <view class="action-btn" bindtap="editRoom" data-id="{{item._id}}">编辑</view>
+        <view class="action-btn" bindtap="toggleStatus" data-id="{{item._id}}" data-status="{{item.status}}">
+          {{item.status === 1 ? '下架' : '上架'}}
+        </view>
+        <view class="action-btn danger" bindtap="deleteRoom" data-id="{{item._id}}">删除</view>
+      </view>
+    </view>
+  </view>
+  <view class="empty" wx:if="{{!loading && !rooms.length}}">
+    <text class="empty-icon">🛏️</text><text class="empty-text">暂无房型</text>
+  </view>
+</view>

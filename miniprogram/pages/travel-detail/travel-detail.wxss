@@ -1,0 +1,13 @@
+.travel-detail { padding-bottom: 120rpx; }
+.detail-swiper { height: 400rpx; }
+.detail-img { width: 100%; height: 400rpx; }
+.store-name { font-size: 36rpx; font-weight: bold; display: block; }
+.score-text { font-size: 26rpx; color: #FF9500; }
+.store-tags { margin: 16rpx 0; }
+.store-desc { font-size: 26rpx; color: #666; line-height: 1.8; }
+.address-nav { color: #FF6B35; font-size: 24rpx; }
+.scroll-h { white-space: nowrap; padding: 12rpx 0; }
+.nearby-card { display: inline-block; width: 200rpx; margin-right: 16rpx; }
+.nearby-img { width: 200rpx; height: 140rpx; border-radius: 12rpx; }
+.nearby-name { font-size: 24rpx; display: block; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); }

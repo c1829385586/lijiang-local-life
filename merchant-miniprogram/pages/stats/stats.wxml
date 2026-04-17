@@ -1,0 +1,41 @@
+<!--pages/stats/stats.wxml-->
+<view class="stats-page">
+  <view class="stats-header">
+    <text class="stats-title">数据统计</text>
+    <picker mode="selector" range="{{dayOptions}}" bindchange="onDayChange">
+      <text class="stats-period">{{dayOptions[dayIndex]}} ></text>
+    </picker>
+  </view>
+
+  <view class="overview-card">
+    <view class="overview-item">
+      <text class="overview-num">{{stats.totalOrders || 0}}</text>
+      <text class="overview-label">总订单</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-num price">{{stats.totalRevenue || 0}}</text>
+      <text class="overview-label">总营收</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-num">{{stats.paidOrders || 0}}</text>
+      <text class="overview-label">成交订单</text>
+    </view>
+    <view class="overview-item">
+      <text class="overview-num">{{stats.conversionRate || 0}}%</text>
+      <text class="overview-label">转化率</text>
+    </view>
+  </view>
+
+  <view class="chart-card card">
+    <text class="card-title">每日趋势</text>
+    <view class="chart-list">
+      <view class="chart-item" wx:for="{{stats.dailyStats || []}}" wx:key="date">
+        <text class="chart-date">{{item.date.slice(5)}}</text>
+        <view class="chart-bar-wrap">
+          <view class="chart-bar" style="width: {{item.orders / maxOrders * 100}}%"></view>
+        </view>
+        <text class="chart-value">{{item.orders}}单 / ¥{{item.revenue}}</text>
+      </view>
+    </view>
+  </view>
+</view>

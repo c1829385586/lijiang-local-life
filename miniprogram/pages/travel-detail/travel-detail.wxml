@@ -1,0 +1,52 @@
+<!--pages/travel-detail/travel-detail.wxml-->
+<view class="travel-detail">
+  <swiper class="detail-swiper" indicator-dots>
+    <swiper-item wx:for="{{store.images}}" wx:key="*this">
+      <image src="{{item}}" mode="aspectFill" class="detail-img" bindtap="previewImage" data-urls="{{store.images}}" data-current="{{index}}"/>
+    </swiper-item>
+  </swiper>
+
+  <view class="card">
+    <text class="store-name">{{store.name}}</text>
+    <view class="flex" style="margin-top:12rpx">
+      <text class="price" wx:if="{{store.price}}">{{store.price}}</text>
+      <text class="price" wx:else>免费</text>
+      <text class="score-text" style="margin-left:20rpx">⭐{{store.score || '4.8'}}</text>
+    </view>
+    <view class="store-tags">
+      <text class="tag" wx:for="{{store.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">景点介绍</text>
+    <text class="store-desc">{{store.description}}</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">地址</text>
+    <view class="flex" style="justify-content:space-between;margin-top:12rpx" bindtap="openMap">
+      <text>📍 {{store.address}}</text>
+      <text class="address-nav">导航 ></text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{store.openTime}}">
+    <text class="card-title">开放时间</text>
+    <text style="font-size:26rpx;color:#666;margin-top:12rpx">{{store.openTime}}</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">附近美食推荐</text>
+    <scroll-view scroll-x class="scroll-h">
+      <view class="nearby-card" wx:for="{{nearbyFoods}}" wx:key="_id" bindtap="goFood" data-id="{{item._id}}">
+        <image class="nearby-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <text class="nearby-name ellipsis">{{item.name}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="bottom-bar">
+    <view class="btn-primary" bindtap="openMap" style="flex:1">导航到这里</view>
+  </view>
+</view>

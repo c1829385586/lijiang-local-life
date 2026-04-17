@@ -1,0 +1,8 @@
+.travel-card { padding: 0 !important; overflow: hidden; }
+.travel-img { width: 100%; height: 340rpx; border-radius: 16rpx 16rpx 0 0; }
+.travel-info { padding: 20rpx; }
+.travel-name { font-size: 32rpx; font-weight: bold; display: block; }
+.travel-desc { font-size: 24rpx; color: #666; margin: 8rpx 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.travel-score { font-size: 22rpx; color: #FF9500; margin-right: 12rpx; }
+.travel-distance { font-size: 22rpx; color: #999; }
+.travel-tags { margin-top: 12rpx; }

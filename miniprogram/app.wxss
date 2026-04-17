@@ -1,0 +1,78 @@
+page {
+  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.container {
+  padding: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin: 20rpx 0;
+  padding: 0 20rpx;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 16rpx 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.price {
+  color: #FF6B35;
+  font-weight: bold;
+}
+
+.price::before {
+  content: '¥';
+  font-size: 24rpx;
+}
+
+.btn-primary {
+  background: #FF6B35;
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  padding: 16rpx 0;
+  text-align: center;
+  border: none;
+}
+
+.tag {
+  background: #FFF3ED;
+  color: #FF6B35;
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  display: inline-block;
+  margin-right: 8rpx;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

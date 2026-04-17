@@ -1,0 +1,36 @@
+<!--pages/coupon/coupon.wxml-->
+<view class="coupon-page">
+  <view class="coupon-header">
+    <text class="coupon-title">优惠券</text>
+    <text class="coupon-subtitle">领券下单更划算</text>
+  </view>
+
+  <view class="coupon-list">
+    <view class="coupon-card {{item.used ? 'used' : ''}}" wx:for="{{coupons}}" wx:key="_id">
+      <view class="coupon-left">
+        <text class="coupon-value" wx:if="{{item.type === '满减' || item.type === '立减'}}">¥<text class="value-num">{{item.value}}</text></text>
+        <text class="coupon-value" wx:elif="{{item.type === '折扣'}}"><text class="value-num">{{item.value}}</text>折</text>
+        <text class="coupon-value" wx:elif="{{item.type === '包邮'}}"><text class="value-num">包邮</text></text>
+        <text class="coupon-condition" wx:if="{{item.minPrice}}">满{{item.minPrice}}可用</text>
+        <text class="coupon-condition" wx:else>无门槛</text>
+      </view>
+      <view class="coupon-right">
+        <text class="coupon-name">{{item.name}}</text>
+        <text class="coupon-store">{{item.storeName}}</text>
+        <text class="coupon-expire">有效期至 {{item.expireDate}}</text>
+        <view class="coupon-btn {{item.used ? 'disabled' : ''}}" bindtap="receiveCoupon" data-id="{{item._id}}">
+          {{item.used ? '已领取' : '立即领取'}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !coupons.length}}">
+    <text class="empty-icon">🎫</text>
+    <text class="empty-text">暂无优惠券</text>
+  </view>
+
+  <view class="coupon-footer" bindtap="goUse">
+    <text class="footer-text">去使用 ></text>
+  </view>
+</view>

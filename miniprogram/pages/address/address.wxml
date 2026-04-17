@@ -1,0 +1,31 @@
+<!--pages/address/address.wxml-->
+<view class="address-page">
+  <view class="address-list" wx:if="{{addresses.length}}">
+    <view class="address-card card" wx:for="{{addresses}}" wx:key="_id">
+      <view class="flex">
+        <text class="addr-name">{{item.name}}</text>
+        <text class="addr-phone">{{item.phone}}</text>
+        <text class="addr-default" wx:if="{{item.isDefault}}">默认</text>
+      </view>
+      <text class="addr-detail">{{item.province}}{{item.city}}{{item.district}}{{item.detail}}</text>
+      <view class="addr-actions flex-between">
+        <view class="flex" bindtap="setDefault" data-id="{{item._id}}">
+          <radio checked="{{item.isDefault}}" color="#FF6B35"/>
+          <text>设为默认</text>
+        </view>
+        <view class="flex">
+          <text class="addr-edit" bindtap="editAddress" data-id="{{item._id}}">编辑</text>
+          <text class="addr-delete" bindtap="deleteAddress" data-id="{{item._id}}">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!loading && !addresses.length}}">
+    <text class="empty-icon">📍</text>
+    <text class="empty-text">暂无地址</text>
+  </view>
+
+  <!-- 新增地址 -->
+  <view class="btn-primary add-btn" bindtap="addAddress">+ 新增收货地址</view>
+</view>

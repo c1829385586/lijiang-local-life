@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>丽江本地生活 - 后台管理</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-plus@2.4.4/dist/index.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; }
+    .login-page { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .login-card { background: #fff; padding: 40px; border-radius: 12px; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+    .login-title { text-align: center; font-size: 24px; font-weight: bold; color: #333; margin-bottom: 8px; }
+    .login-sub { text-align: center; color: #999; margin-bottom: 30px; font-size: 14px; }
+    .layout { display: flex; height: 100vh; }
+    .sidebar { width: 220px; background: #1a1a2e; color: #fff; overflow-y: auto; flex-shrink: 0; }
+    .sidebar-logo { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo h2 { font-size: 16px; color: #E8885A; }
+    .sidebar-logo p { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+    .menu-item { padding: 14px 24px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7); }
+    .menu-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .menu-item.active { background: rgba(232,136,90,0.2); color: #E8885A; border-right: 3px solid #E8885A; }
+    .menu-icon { font-size: 18px; }
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .top-bar { height: 60px; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .top-bar h3 { font-size: 18px; color: #333; }
+    .content-area { flex: 1; padding: 20px; overflow-y: auto; }
+    .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .stat-card .label { font-size: 13px; color: #999; }
+    .stat-card .value { font-size: 28px; font-weight: bold; color: #333; margin-top: 8px; }
+    .stat-card .extra { font-size: 12px; color: #E8885A; margin-top: 4px; }
+    .stat-card.blue .value { color: #4A90B8; }
+    .stat-card.green .value { color: #6AAF7C; }
+    .stat-card.purple .value { color: #8B7EC8; }
+    .stat-card.red .value { color: #D46B6B; }
+    .table-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .table-header h4 { font-size: 16px; }
+    .table-actions { display: flex; gap: 8px; }
+    .pagination-wrap { margin-top: 16px; display: flex; justify-content: flex-end; }
+    .tag-hotel { background: #E8F4FD; color: #007AFF; }
+    .tag-food { background: #FFF3ED; color: #E8885A; }
+    .tag-travel { background: #E8F8E8; color: #6AAF7C; }
+    .tag-product { background: #F0F0FF; color: #8B7EC8; }
+    .empty-state { text-align: center; padding: 60px; color: #999; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 登录页 -->
+    <div class="login-page" v-if="!logged">
+      <div class="login-card">
+        <div class="login-title">🏔️ 丽江本地生活</div>
+        <div class="login-sub">后台管理系统</div>
+        <el-form @submit.prevent="doLogin">
+          <el-form-item>
+            <el-input v-model="loginForm.password" type="password" placeholder="请输入管理员密码" size="large" show-password @keyup.enter="doLogin">
+              <template #prefix><span>🔒</span></template>
+            </el-input>
+          </el-form-item>
+          <el-button type="primary" size="large" style="width:100%;background:linear-gradient(135deg,#E8885A,#D46B6B);border:none" @click="doLogin" :loading="loginLoading">
+            登 录
+          </el-button>
+        </el-form>
+        <p style="text-align:center;color:#ccc;font-size:12px;margin-top:16px">默认密码: admin123</p>
+      </div>
+    </div>
+
+    <!-- 后台主界面 -->
+    <div class="layout" v-else>
+      <!-- 侧边栏 -->
+      <div class="sidebar">
+        <div class="sidebar-logo">
+          <h2>🏔️ 丽江本地生活</h2>
+          <p>后台管理 v1.0</p>
+        </div>
+        <div v-for="item in menuItems" :key="item.key" class="menu-item" :class="{ active: currentPage === item.key }" @click="currentPage = item.key">
+          <span class="menu-icon">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+        </div>
+        <div style="margin-top:auto;padding:24px;border-top:1px solid rgba(255,255,255,0.1)">
+          <div class="menu-item" @click="doLogout" style="color:#D46B6B">
+            <span class="menu-icon">🚪</span><span>退出登录</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主内容区 -->
+      <div class="main-content">
+        <div class="top-bar">
+          <h3>{{ currentTitle }}</h3>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="color:#999;font-size:13px">{{ currentTime }}</span>
+            <el-button size="small" @click="refreshPage">🔄 刷新</el-button>
+          </div>
+        </div>
+        <div class="content-area">
+          <!-- 数据概览 -->
+          <template v-if="currentPage === 'dashboard'">
+            <div class="stat-cards">
+              <div class="stat-card"><div class="label">总商家数</div><div class="value">{{ dashboard.totalStores || 0 }}</div><div class="extra">🏪</div></div>
+              <div class="stat-card blue"><div class="label">总订单数</div><div class="value">{{ dashboard.totalOrders || 0 }}</div><div class="extra">📋</div></div>
+              <div class="stat-card green"><div class="label">总用户数</div><div class="value">{{ dashboard.totalUsers || 0 }}</div><div class="extra">👤</div></div>
+              <div class="stat-card purple"><div class="label">今日营收</div><div class="value">¥{{ dashboard.todayRevenue || 0 }}</div><div class="extra">今日{{ dashboard.todayOrders || 0 }}单</div></div>
+            </div>
+            <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+              <div class="stat-card red"><div class="label">待审核商家</div><div class="value">{{ dashboard.pendingMerchants || 0 }}</div></div>
+              <div class="stat-card"><div class="label">待处理订单</div><div class="value">{{ dashboard.pendingOrders || 0 }}</div></div>
+              <div class="stat-card green"><div class="label">今日订单</div><div class="value">{{ dashboard.todayOrders || 0 }}</div></div>
+            </div>
+          </template>
+
+          <!-- 商家管理 -->
+          <template v-if="currentPage === 'merchants'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>商家管理</h4>
+                <div class="table-actions">
+                  <el-select v-model="merchantFilter.status" placeholder="状态筛选" clearable size="small" style="width:120px" @change="loadMerchants">
+                    <el-option label="待审核" :value="0"/>
+                    <el-option label="已通过" :value="1"/>
+                    <el-option label="已禁用" :value="2"/>
+                  </el-select>
+                  <el-input v-model="merchantFilter.keyword" placeholder="搜索商家" size="small" style="width:200px" clearable @keyup.enter="loadMerchants">
+                    <template #append><el-button @click="loadMerchants">🔍</el-button></template>
+                  </el-input>
+                </div>
+              </div>
+              <el-table :data="merchants" stripe v-loading="tableLoading">
+                <el-table-column prop="name" label="店铺名称" min-width="120"/>
+                <el-table-column prop="type" label="类型" width="100">
+                  <template #default="{ row }">
+                    <el-tag size="small" :class="'tag-' + row.type">{{ typeMap[row.type] }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="contactName" label="联系人" width="100"/>
+                <el-table-column prop="phone" label="电话" width="130"/>
+                <el-table-column prop="status" label="状态" width="100">
+                  <template #default="{ row }">
+                    <el-tag :type="row.status === 1 ? 'success' : row.status === 0 ? 'warning' : 'danger'" size="small">
+                      {{ statusMap[row.status] }}
+                    </el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" width="200" fixed="right">
+                  <template #default="{ row }">
+                    <el-button v-if="row.status === 0" type="success" size="small" @click="auditMerchant(row._id, 1)">通过</el-button>
+                    <el-button v-if="row.status === 0" type="danger" size="small" @click="auditMerchant(row._id, 2)">拒绝</el-button>
+                    <el-button v-if="row.status === 1" type="warning" size="small" @click="auditMerchant(row._id, 2)">禁用</el-button>
+                    <el-button v-if="row.status === 2" type="success" size="small" @click="auditMerchant(row._id, 1)">启用</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="merchantTotal" :page-size="20" @current-change="p => { merchantPage = p; loadMerchants() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 订单管理 -->
+          <template v-if="currentPage === 'orders'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>订单管理</h4>
+                <div class="table-actions">
+                  <el-select v-model="orderFilter.status" placeholder="状态筛选" clearable size="small" style="width:120px" @change="loadOrders">
+                    <el-option label="待处理" value="pending"/>
+                    <el-option label="已支付" value="paid"/>
+                    <el-option label="已完成" value="completed"/>
+                    <el-option label="已取消" value="cancelled"/>
+                  </el-select>
+                  <el-input v-model="orderFilter.keyword" placeholder="搜索订单号" size="small" style="width:200px" clearable @keyup.enter="loadOrders">
+                    <template #append><el-button @click="loadOrders">🔍</el-button></template>
+                  </el-input>
+                </div>
+              </div>
+              <el-table :data="orders" stripe v-loading="tableLoading">
+                <el-table-column prop="orderNo" label="订单号" width="160"/>
+                <el-table-column prop="type" label="类型" width="80">
+                  <template #default="{ row }"><el-tag size="small">{{ typeMap[row.type] }}</el-tag></template>
+                </el-table-column>
+                <el-table-column prop="storeName" label="店铺" min-width="120"/>
+                <el-table-column prop="totalPrice" label="金额" width="100">
+                  <template #default="{ row }"><span style="color:#E8885A;font-weight:bold">¥{{ row.totalPrice }}</span></template>
+                </el-table-column>
+                <el-table-column prop="status" label="状态" width="100">
+                  <template #default="{ row }">
+                    <el-tag :type="orderStatusType[row.status]" size="small">{{ orderStatusMap[row.status] }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="createdAt" label="下单时间" width="170"/>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="orderTotal" :page-size="20" @current-change="p => { orderPage = p; loadOrders() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 店铺管理 -->
+          <template v-if="currentPage === 'stores'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>店铺管理</h4>
+                <div class="table-actions">
+                  <el-select v-model="storeFilter.type" placeholder="类型筛选" clearable size="small" style="width:120px" @change="loadStores">
+                    <el-option label="酒店民宿" value="hotel"/>
+                    <el-option label="美食" value="food"/>
+                    <el-option label="游玩" value="travel"/>
+                  </el-select>
+                  <el-select v-model="storeFilter.status" placeholder="状态筛选" clearable size="small" style="width:120px" @change="loadStores">
+                    <el-option label="上架中" :value="1"/>
+                    <el-option label="已下架" :value="0"/>
+                  </el-select>
+                </div>
+              </div>
+              <el-table :data="stores" stripe v-loading="tableLoading">
+                <el-table-column prop="name" label="店铺名称" min-width="140"/>
+                <el-table-column prop="type" label="类型" width="100">
+                  <template #default="{ row }"><el-tag size="small" :class="'tag-' + row.type">{{ typeMap[row.type] }}</el-tag></template>
+                </el-table-column>
+                <el-table-column prop="address" label="地址" min-width="180" show-overflow-tooltip/>
+                <el-table-column prop="score" label="评分" width="80"/>
+                <el-table-column prop="status" label="状态" width="100">
+                  <template #default="{ row }">
+                    <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">{{ row.status === 1 ? '上架' : '下架' }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" width="120">
+                  <template #default="{ row }">
+                    <el-button size="small" @click="toggleStoreStatus(row)">{{ row.status === 1 ? '下架' : '上架' }}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="storeTotal" :page-size="20" @current-change="p => { storePage = p; loadStores() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 商品管理 -->
+          <template v-if="currentPage === 'products'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>商品管理</h4>
+                <div class="table-actions">
+                  <el-select v-model="productFilter.status" placeholder="状态筛选" clearable size="small" style="width:120px" @change="loadProducts">
+                    <el-option label="上架中" :value="1"/>
+                    <el-option label="已下架" :value="0"/>
+                  </el-select>
+                  <el-input v-model="productFilter.keyword" placeholder="搜索商品名" size="small" style="width:200px" clearable @keyup.enter="loadProducts">
+                    <template #append><el-button @click="loadProducts">🔍</el-button></template>
+                  </el-input>
+                </div>
+              </div>
+              <el-table :data="products" stripe v-loading="tableLoading">
+                <el-table-column prop="name" label="商品名称" min-width="140"/>
+                <el-table-column prop="category" label="分类" width="100"/>
+                <el-table-column prop="price" label="售价" width="100">
+                  <template #default="{ row }"><span style="color:#E8885A;font-weight:bold">¥{{ row.price }}</span></template>
+                </el-table-column>
+                <el-table-column prop="stock" label="库存" width="80"/>
+                <el-table-column prop="sales" label="销量" width="80"/>
+                <el-table-column prop="status" label="状态" width="100">
+                  <template #default="{ row }">
+                    <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">{{ row.status === 1 ? '上架' : '下架' }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" width="120">
+                  <template #default="{ row }">
+                    <el-button size="small" @click="toggleProductStatus(row)">{{ row.status === 1 ? '下架' : '上架' }}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="productTotal" :page-size="20" @current-change="p => { productPage = p; loadProducts() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 轮播图管理 -->
+          <template v-if="currentPage === 'banners'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>轮播图管理</h4>
+                <el-button type="primary" size="small" @click="showBannerDialog()">+ 添加轮播图</el-button>
+              </div>
+              <el-table :data="banners" stripe v-loading="tableLoading">
+                <el-table-column prop="imageUrl" label="图片" width="120">
+                  <template #default="{ row }"><el-image :src="row.imageUrl" style="width:80px;height:50px" fit="cover"/></template>
+                </el-table-column>
+                <el-table-column prop="linkUrl" label="跳转链接" min-width="200" show-overflow-tooltip/>
+                <el-table-column prop="sort" label="排序" width="80"/>
+                <el-table-column prop="status" label="状态" width="80">
+                  <template #default="{ row }"><el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag></template>
+                </el-table-column>
+                <el-table-column label="操作" width="160">
+                  <template #default="{ row }">
+                    <el-button size="small" @click="showBannerDialog(row)">编辑</el-button>
+                    <el-button size="small" type="danger" @click="deleteBanner(row._id)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </template>
+
+          <!-- 评价管理 -->
+          <template v-if="currentPage === 'reviews'">
+            <!-- 评价概览 -->
+            <div class="stat-cards" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
+              <div class="stat-card"><div class="label">总评价数</div><div class="value">{{ reviewStats.total || 0 }}</div><div class="extra">💬</div></div>
+              <div class="stat-card blue"><div class="label">平均评分</div><div class="value">{{ reviewStats.avgRating || 0 }}⭐</div></div>
+              <div class="stat-card green"><div class="label">5星好评</div><div class="value">{{ reviewStats.ratingDist?.['5'] || 0 }}</div></div>
+              <div class="stat-card red"><div class="label">差评(1-2星)</div><div class="value">{{ (reviewStats.ratingDist?.['1'] || 0) + (reviewStats.ratingDist?.['2'] || 0) }}</div></div>
+              <div class="stat-card purple"><div class="label">已隐藏</div><div class="value">{{ reviewStats.hidden || 0 }}</div></div>
+            </div>
+            <!-- 评分分布条 -->
+            <div class="table-card" style="margin-bottom:20px">
+              <h4 style="margin-bottom:12px">评分分布</h4>
+              <div v-for="star in [5,4,3,2,1]" :key="star" style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="width:50px;text-align:right">{{ star }}⭐</span>
+                <div style="flex:1;background:#f0f0f0;border-radius:4px;height:20px;overflow:hidden">
+                  <div :style="{width: (reviewStats.total > 0 ? ((reviewStats.ratingDist?.[star] || 0) / reviewStats.total * 100) : 0) + '%', background: star >= 4 ? '#6AAF7C' : star === 3 ? '#E8885A' : '#D46B6B', height: '100%', transition: 'width 0.3s'}"></div>
+                </div>
+                <span style="width:40px;color:#999">{{ reviewStats.ratingDist?.[star] || 0 }}</span>
+              </div>
+            </div>
+            <div class="table-card">
+              <div class="table-header">
+                <h4>评价列表</h4>
+                <div class="table-actions">
+                  <el-select v-model="reviewFilter.rating" placeholder="评分筛选" clearable size="small" style="width:100px" @change="loadReviews">
+                    <el-option v-for="s in [5,4,3,2,1]" :key="s" :label="s+'⭐'" :value="s"/>
+                  </el-select>
+                  <el-select v-model="reviewFilter.status" placeholder="状态筛选" clearable size="small" style="width:100px" @change="loadReviews">
+                    <el-option label="显示" :value="1"/>
+                    <el-option label="已隐藏" :value="0"/>
+                  </el-select>
+                  <el-input v-model="reviewFilter.keyword" placeholder="搜索评价内容" size="small" style="width:200px" clearable @keyup.enter="loadReviews">
+                    <template #append><el-button @click="loadReviews">🔍</el-button></template>
+                  </el-input>
+                </div>
+              </div>
+              <el-table :data="reviews" stripe v-loading="tableLoading">
+                <el-table-column prop="nickName" label="用户" width="100"/>
+                <el-table-column prop="storeName" label="店铺" width="120"/>
+                <el-table-column prop="rating" label="评分" width="80">
+                  <template #default="{ row }"><span>{{ '⭐'.repeat(row.rating) }}</span></template>
+                </el-table-column>
+                <el-table-column prop="content" label="评价内容" min-width="200" show-overflow-tooltip/>
+                <el-table-column prop="reply" label="商家回复" min-width="150" show-overflow-tooltip>
+                  <template #default="{ row }">
+                    <span v-if="row.reply" style="color:#6AAF7C">{{ row.reply }}</span>
+                    <span v-else style="color:#ccc">未回复</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="status" label="状态" width="80">
+                  <template #default="{ row }">
+                    <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">{{ row.status === 1 ? '显示' : '隐藏' }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="createdAt" label="时间" width="170"/>
+                <el-table-column label="操作" width="180" fixed="right">
+                  <template #default="{ row }">
+                    <el-button v-if="row.status === 1" size="small" type="warning" @click="hideReview(row._id)">隐藏</el-button>
+                    <el-button v-else size="small" type="success" @click="showReview(row._id)">显示</el-button>
+                    <el-button size="small" type="danger" @click="deleteReview(row._id)">删除</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="reviewTotal" :page-size="20" @current-change="p => { reviewPage = p; loadReviews() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 消息推送管理 -->
+          <template v-if="currentPage === 'notify'">
+            <!-- 通知统计 -->
+            <div class="stat-cards" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">
+              <div class="stat-card"><div class="label">总推送次数</div><div class="value">{{ notifyStats.total || 0 }}</div><div class="extra">📡</div></div>
+              <div class="stat-card green"><div class="label">发送成功</div><div class="value">{{ notifyStats.success || 0 }}</div><div class="extra">{{ notifyStats.total > 0 ? (notifyStats.success / notifyStats.total * 100).toFixed(1) : 0 }}%</div></div>
+              <div class="stat-card red"><div class="label">发送失败</div><div class="value">{{ notifyStats.failed || 0 }}</div></div>
+              <div class="stat-card blue"><div class="label">今日推送</div><div class="value">{{ notifyStats.todayCount || 0 }}</div></div>
+            </div>
+
+            <!-- 模板配置 -->
+            <div class="table-card" style="margin-bottom:20px">
+              <div class="table-header">
+                <h4>📋 订阅消息模板配置</h4>
+              </div>
+              <p style="color:#999;font-size:13px;margin-bottom:16px">
+                模板ID需在 <a href="https://mp.weixin.qq.com/" target="_blank" style="color:#4A90B8">微信公众平台</a> → 订阅消息 中获取，然后填入 notify 云函数的 TEMPLATE_IDS 中
+              </p>
+              <el-table :data="notifyTemplates" stripe>
+                <el-table-column prop="key" label="标识" width="180"/>
+                <el-table-column prop="name" label="用途" width="180"/>
+                <el-table-column prop="desc" label="触发场景" min-width="200"/>
+                <el-table-column prop="fields" label="消息字段" min-width="200"/>
+              </el-table>
+            </div>
+
+            <!-- 手动推送 -->
+            <div class="table-card" style="margin-bottom:20px">
+              <div class="table-header">
+                <h4>🚀 手动推送通知</h4>
+              </div>
+              <el-form inline @submit.prevent>
+                <el-form-item label="订单号">
+                  <el-input v-model="manualNotifyForm.orderNo" placeholder="输入订单号" style="width:200px" clearable/>
+                </el-form-item>
+                <el-form-item label="通知类型">
+                  <el-select v-model="manualNotifyForm.type" placeholder="选择类型" style="width:180px">
+                    <el-option label="支付成功通知" value="orderPaid"/>
+                    <el-option label="订单完成通知" value="orderCompleted"/>
+                    <el-option label="订单取消通知" value="orderCancelled"/>
+                    <el-option label="商户新订单通知" value="sendMerchantNotify"/>
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="sendManualNotify" :loading="notifySending">发送通知</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+
+            <!-- 推送日志 -->
+            <div class="table-card">
+              <div class="table-header">
+                <h4>📜 推送日志</h4>
+                <div class="table-actions">
+                  <el-select v-model="notifyLogFilter.type" placeholder="类型筛选" clearable size="small" style="width:160px" @change="loadNotifyLogs">
+                    <el-option label="支付通知" value="orderPaid"/>
+                    <el-option label="完成通知" value="orderCompleted"/>
+                    <el-option label="取消通知" value="orderCancelled"/>
+                    <el-option label="新订单通知" value="merchantNewOrder"/>
+                  </el-select>
+                  <el-select v-model="notifyLogFilter.status" placeholder="状态筛选" clearable size="small" style="width:100px" @change="loadNotifyLogs">
+                    <el-option label="成功" value="success"/>
+                    <el-option label="失败" value="failed"/>
+                  </el-select>
+                </div>
+              </div>
+              <el-table :data="notifyLogs" stripe v-loading="tableLoading">
+                <el-table-column prop="orderNo" label="订单号" width="160"/>
+                <el-table-column prop="type" label="通知类型" width="140">
+                  <template #default="{ row }">
+                    <el-tag size="small" :type="notifyTypeTag[row.type]">{{ notifyTypeMap[row.type] }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="status" label="状态" width="80">
+                  <template #default="{ row }">
+                    <el-tag :type="row.status === 'success' ? 'success' : 'danger'" size="small">{{ row.status === 'success' ? '成功' : '失败' }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="error" label="错误信息" min-width="200" show-overflow-tooltip>
+                  <template #default="{ row }">
+                    <span v-if="row.error" style="color:#D46B6B">{{ row.error }}</span>
+                    <span v-else style="color:#ccc">-</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="createdAt" label="发送时间" width="170"/>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="notifyLogTotal" :page-size="20" @current-change="p => { notifyLogPage = p; loadNotifyLogs() }"/>
+              </div>
+            </div>
+          </template>
+
+          <!-- 用户管理 -->
+          <template v-if="currentPage === 'users'">
+            <div class="table-card">
+              <div class="table-header">
+                <h4>用户管理 (共{{ userTotal }}人)</h4>
+                <el-input v-model="userFilter.keyword" placeholder="搜索昵称" size="small" style="width:200px" clearable @keyup.enter="loadUsers">
+                  <template #append><el-button @click="loadUsers">🔍</el-button></template>
+                </el-input>
+              </div>
+              <el-table :data="users" stripe v-loading="tableLoading">
+                <el-table-column label="头像" width="80">
+                  <template #default="{ row }"><el-avatar :src="row.avatarUrl || ''" :size="40">{{ (row.nickName || '用')[0] }}</el-avatar></template>
+                </el-table-column>
+                <el-table-column prop="nickName" label="昵称" min-width="120"/>
+                <el-table-column prop="openid" label="OpenID" min-width="220" show-overflow-tooltip/>
+                <el-table-column prop="createdAt" label="注册时间" width="170"/>
+              </el-table>
+              <div class="pagination-wrap">
+                <el-pagination layout="prev, pager, next" :total="userTotal" :page-size="20" @current-change="p => { userPage = p; loadUsers() }"/>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- 轮播图编辑弹窗 -->
+    <el-dialog v-model="bannerDialogVisible" :title="bannerForm._id ? '编辑轮播图' : '添加轮播图'" width="500px">
+      <el-form label-width="80px">
+        <el-form-item label="图片URL">
+          <el-input v-model="bannerForm.imageUrl" placeholder="图片链接"/>
+        </el-form-item>
+        <el-form-item label="跳转链接">
+          <el-input v-model="bannerForm.linkUrl" placeholder="跳转页面路径"/>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input-number v-model="bannerForm.sort" :min="0" :max="99"/>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-switch v-model="bannerForm.status" :active-value="1" :inactive-value="0" active-text="启用" inactive-text="禁用"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="bannerDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="saveBanner">保存</el-button>
+      </template>
+    </el-dialog>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.4.15/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/element-plus@2.4.4/dist/index.full.min.js"></script>
+  <script>
+    const { createApp, ref, computed, onMounted, watch } = Vue
+
+    // ====== 配置 ======
+    const CLOUD_ENV = 'cloud1-5gtgqlar51205e68'
+    // HTTP服务路由地址（在云开发控制台路由管理中配置）
+    const CLOUD_BASE = `https://${CLOUD_ENV}-1422786062.ap-shanghai.app.tcloudbase.com/admin`
+
+    const app = createApp({
+      setup() {
+        // 登录状态
+        const logged = ref(!!localStorage.getItem('admin_token'))
+        const token = ref(localStorage.getItem('admin_token') || '')
+        const loginForm = ref({ password: '' })
+        const loginLoading = ref(false)
+
+        // 菜单
+        const menuItems = [
+          { key: 'dashboard', icon: '📊', label: '数据概览' },
+          { key: 'merchants', icon: '🏪', label: '商家管理' },
+          { key: 'orders', icon: '📋', label: '订单管理' },
+          { key: 'stores', icon: '🏨', label: '店铺管理' },
+          { key: 'products', icon: '🎁', label: '商品管理' },
+          { key: 'banners', icon: '🖼️', label: '轮播图管理' },
+          { key: 'reviews', icon: '⭐', label: '评价管理' },
+          { key: 'notify', icon: '🔔', label: '消息推送' },
+          { key: 'users', icon: '👤', label: '用户管理' }
+        ]
+        const currentPage = ref('dashboard')
+        const currentTitle = computed(() => menuItems.find(m => m.key === currentPage.value)?.label || '')
+        const currentTime = ref('')
+        const tableLoading = ref(false)
+
+        // 数据映射
+        const typeMap = { hotel: '酒店民宿', food: '美食', travel: '游玩', product: '特产' }
+        const statusMap = { 0: '待审核', 1: '已通过', 2: '已禁用' }
+        const orderStatusMap = { pending: '待处理', paid: '已支付', completed: '已完成', cancelled: '已取消', rejected: '已拒绝' }
+        const orderStatusType = { pending: 'warning', paid: 'success', completed: 'info', cancelled: 'danger', rejected: 'danger' }
+
+        // 数据
+        const dashboard = ref({})
+        const merchants = ref([]); const merchantTotal = ref(0); const merchantPage = ref(1); const merchantFilter = ref({ status: '', keyword: '' })
+        const orders = ref([]); const orderTotal = ref(0); const orderPage = ref(1); const orderFilter = ref({ status: '', keyword: '' })
+        const stores = ref([]); const storeTotal = ref(0); const storePage = ref(1); const storeFilter = ref({ type: '', status: '' })
+        const products = ref([]); const productTotal = ref(0); const productPage = ref(1); const productFilter = ref({ status: '', keyword: '' })
+        const banners = ref([])
+        const users = ref([]); const userTotal = ref(0); const userPage = ref(1); const userFilter = ref({ keyword: '' })
+
+        // 评价管理
+        const reviews = ref([]); const reviewTotal = ref(0); const reviewPage = ref(1)
+        const reviewFilter = ref({ rating: '', status: '', keyword: '' })
+        const reviewStats = ref({ total: 0, avgRating: 0, ratingDist: {5:0,4:0,3:0,2:0,1:0}, hidden: 0 })
+
+        // 消息推送
+        const notifyStats = ref({ total: 0, success: 0, failed: 0, todayCount: 0 })
+        const notifyLogs = ref([]); const notifyLogTotal = ref(0); const notifyLogPage = ref(1)
+        const notifyLogFilter = ref({ type: '', status: '' })
+        const notifySending = ref(false)
+        const manualNotifyForm = ref({ orderNo: '', type: 'orderPaid' })
+        const notifyTypeMap = {
+          orderPaid: '支付通知', orderCompleted: '完成通知',
+          orderCancelled: '取消通知', merchantNewOrder: '新订单通知'
+        }
+        const notifyTypeTag = { orderPaid: 'success', orderCompleted: 'info', orderCancelled: 'danger', merchantNewOrder: 'warning' }
+        const notifyTemplates = [
+          { key: 'orderPaid', name: '订单支付成功', desc: '用户支付成功后发送', fields: '店铺名称、订单号、订单类型、金额、状态' },
+          { key: 'orderCompleted', name: '订单完成通知', desc: '商户确认完成或用户确认收货时发送', fields: '店铺名称、订单号、订单类型、金额、状态' },
+          { key: 'orderCancelled', name: '订单取消通知', desc: '订单取消时发送', fields: '店铺名称、订单号、订单类型、金额、状态' },
+          { key: 'merchantNewOrder', name: '商户新订单通知', desc: '用户下单后通知商户', fields: '店铺名称、订单号、订单类型、金额、提醒' }
+        ]
+
+        const bannerDialogVisible = ref(false)
+        const bannerForm = ref({ imageUrl: '', linkUrl: '', sort: 0, status: 1 })
+
+        // API调用 —— 通过HTTP触发器调云函数
+        async function call(action, data = {}) {
+          const body = { action, token: token.value, ...data }
+          try {
+            const res = await fetch(CLOUD_BASE, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            })
+            const json = await res.json()
+            return json
+          } catch (e) {
+            console.error('云函数调用失败:', e)
+            if (typeof ElMessage !== 'undefined') ElMessage.error('云函数调用失败')
+            return { code: -1, msg: e.message || '网络请求失败' }
+          }
+        }
+
+        // 登录
+        async function doLogin() {
+          if (!loginForm.value.password) return ElMessage.warning('请输入密码')
+          loginLoading.value = true
+          const res = await call('login', { password: loginForm.value.password })
+          loginLoading.value = false
+          if (res.code === 0) {
+            token.value = res.token
+            localStorage.setItem('admin_token', res.token)
+            logged.value = true
+            ElMessage.success('登录成功')
+            loadDashboard()
+          } else {
+            ElMessage.error(res.msg || '登录失败')
+          }
+        }
+
+        function doLogout() {
+          token.value = ''
+          localStorage.removeItem('admin_token')
+          logged.value = false
+        }
+
+        // 数据加载
+        async function loadDashboard() {
+          const res = await call('dashboard')
+          if (res.code === 0) dashboard.value = res.data
+        }
+
+        async function loadMerchants() {
+          tableLoading.value = true
+          const res = await call('merchantList', { page: merchantPage.value, ...merchantFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { merchants.value = res.data; merchantTotal.value = res.total }
+        }
+
+        async function loadOrders() {
+          tableLoading.value = true
+          const res = await call('orderList', { page: orderPage.value, ...orderFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { orders.value = res.data; orderTotal.value = res.total }
+        }
+
+        async function loadStores() {
+          tableLoading.value = true
+          const res = await call('storeList', { page: storePage.value, ...storeFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { stores.value = res.data; storeTotal.value = res.total }
+        }
+
+        async function loadProducts() {
+          tableLoading.value = true
+          const res = await call('productList', { page: productPage.value, ...productFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { products.value = res.data; productTotal.value = res.total }
+        }
+
+        async function loadBanners() {
+          tableLoading.value = true
+          const res = await call('bannerList')
+          tableLoading.value = false
+          if (res.code === 0) banners.value = res.data
+        }
+
+        async function loadUsers() {
+          tableLoading.value = true
+          const res = await call('userList', { page: userPage.value, ...userFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { users.value = res.data; userTotal.value = res.total }
+        }
+
+        // 操作
+        async function auditMerchant(id, status) {
+          const msg = status === 1 ? '确定通过审核？' : status === 2 ? '确定禁用此商家？' : ''
+          await ElMessageBox.confirm(msg, '提示')
+          const res = await call('merchantAudit', { merchantId: id, status })
+          if (res.code === 0) { ElMessage.success(res.msg); loadMerchants() }
+        }
+
+        async function toggleStoreStatus(row) {
+          const newStatus = row.status === 1 ? 0 : 1
+          const res = await call('storeUpdate', { storeId: row._id, data: { status: newStatus } })
+          if (res.code === 0) { ElMessage.success(res.msg); loadStores() }
+        }
+
+        async function toggleProductStatus(row) {
+          const newStatus = row.status === 1 ? 0 : 1
+          const res = await call('productUpdate', { productId: row._id, data: { status: newStatus } })
+          if (res.code === 0) { ElMessage.success(res.msg); loadProducts() }
+        }
+
+        function showBannerDialog(banner) {
+          bannerForm.value = banner ? { ...banner } : { imageUrl: '', linkUrl: '', sort: 0, status: 1 }
+          bannerDialogVisible.value = true
+        }
+
+        async function saveBanner() {
+          const data = { ...bannerForm.value }
+          const action = data._id ? 'bannerUpdate' : 'bannerAdd'
+          const payload = data._id ? { bannerId: data._id, data } : { bannerData: data }
+          const res = await call(action, payload)
+          if (res.code === 0) { ElMessage.success(res.msg); bannerDialogVisible.value = false; loadBanners() }
+        }
+
+        async function deleteBanner(id) {
+          await ElMessageBox.confirm('确定删除此轮播图？', '提示')
+          const res = await call('bannerDelete', { bannerId: id })
+          if (res.code === 0) { ElMessage.success(res.msg); loadBanners() }
+        }
+
+        // ====== 评价管理 ======
+        async function loadReviews() {
+          tableLoading.value = true
+          const res = await call('reviewList', { page: reviewPage.value, ...reviewFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { reviews.value = res.data; reviewTotal.value = res.total }
+        }
+
+        async function loadReviewStats() {
+          const res = await call('reviewStats')
+          if (res.code === 0) reviewStats.value = res.data
+        }
+
+        async function hideReview(id) {
+          const res = await call('reviewHide', { reviewId: id })
+          if (res.code === 0) { ElMessage.success(res.msg); loadReviews(); loadReviewStats() }
+        }
+
+        async function showReview(id) {
+          const res = await call('reviewShow', { reviewId: id })
+          if (res.code === 0) { ElMessage.success(res.msg); loadReviews(); loadReviewStats() }
+        }
+
+        async function deleteReview(id) {
+          await ElMessageBox.confirm('确定删除此评价？删除后不可恢复', '警告', { type: 'warning' })
+          const res = await call('reviewDelete', { reviewId: id })
+          if (res.code === 0) { ElMessage.success(res.msg); loadReviews(); loadReviewStats() }
+        }
+
+        // ====== 消息推送管理 ======
+        async function loadNotifyStats() {
+          const res = await call('notifyStats')
+          if (res.code === 0) notifyStats.value = res.data
+        }
+
+        async function loadNotifyLogs() {
+          tableLoading.value = true
+          const res = await call('notifyLogs', { page: notifyLogPage.value, ...notifyLogFilter.value })
+          tableLoading.value = false
+          if (res.code === 0) { notifyLogs.value = res.data; notifyLogTotal.value = res.total }
+        }
+
+        async function sendManualNotify() {
+          if (!manualNotifyForm.value.orderNo) return ElMessage.warning('请输入订单号')
+          notifySending.value = true
+
+          // 先通过订单号查订单ID
+          const orderRes = await call('orderList', { keyword: manualNotifyForm.value.orderNo })
+          if (orderRes.code !== 0 || orderRes.data.length === 0) {
+            notifySending.value = false
+            return ElMessage.error('未找到该订单')
+          }
+
+          const orderId = orderRes.data[0]._id
+          const notifyType = manualNotifyForm.value.type
+
+          const res = await call('notifySend', { orderId, notifyType })
+          notifySending.value = false
+
+          if (res.code === 0) {
+            ElMessage.success(res.msg || '发送成功')
+            manualNotifyForm.value.orderNo = ''
+            loadNotifyLogs()
+            loadNotifyStats()
+          } else {
+            ElMessage.error(res.msg || '发送失败')
+          }
+        }
+
+        function refreshPage() {
+          const loaders = {
+            dashboard: loadDashboard, merchants: loadMerchants, orders: loadOrders,
+            stores: loadStores, products: loadProducts, banners: loadBanners,
+            reviews: () => { loadReviews(); loadReviewStats() },
+            notify: () => { loadNotifyLogs(); loadNotifyStats() },
+            users: loadUsers
+          }
+          loaders[currentPage.value]?.()
+        }
+
+        // 监听页面切换
+        watch(currentPage, (key) => {
+          const loaders = {
+            dashboard: loadDashboard, merchants: loadMerchants, orders: loadOrders,
+            stores: loadStores, products: loadProducts, banners: loadBanners,
+            reviews: () => { loadReviews(); loadReviewStats() },
+            notify: () => { loadNotifyLogs(); loadNotifyStats() },
+            users: loadUsers
+          }
+          loaders[key]?.()
+        })
+
+        // 时钟
+        setInterval(() => {
+          const d = new Date()
+          currentTime.value = d.toLocaleString('zh-CN')
+        }, 1000)
+
+        onMounted(() => {
+          if (logged.value) loadDashboard()
+        })
+
+        return {
+          logged, loginForm, loginLoading, doLogin, doLogout,
+          menuItems, currentPage, currentTitle, currentTime,
+          typeMap, statusMap, orderStatusMap, orderStatusType, tableLoading,
+          dashboard,
+          merchants, merchantTotal, merchantPage, merchantFilter, loadMerchants, auditMerchant,
+          orders, orderTotal, orderPage, orderFilter, loadOrders,
+          stores, storeTotal, storePage, storeFilter, loadStores, toggleStoreStatus,
+          products, productTotal, productPage, productFilter, loadProducts, toggleProductStatus,
+          banners, bannerDialogVisible, bannerForm, showBannerDialog, saveBanner, deleteBanner,
+          reviews, reviewTotal, reviewPage, reviewFilter, reviewStats, loadReviews, loadReviewStats, hideReview, showReview, deleteReview,
+          notifyStats, notifyLogs, notifyLogTotal, notifyLogPage, notifyLogFilter, notifySending, manualNotifyForm, notifyTypeMap, notifyTypeTag, notifyTemplates, loadNotifyLogs, loadNotifyStats, sendManualNotify,
+          users, userTotal, userPage, userFilter, loadUsers,
+          refreshPage
+        }
+      }
+    })
+
+    app.use(ElementPlus)
+    app.mount('#app')
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!--pages/dashboard/dashboard.wxml-->
+<view class="dashboard">
+  <!-- 订阅通知引导 -->
+  <view class="subscribe-banner" wx:if="{{showSubscribe}}" bindtap="subscribeNewOrder">
+    <text class="subscribe-icon">🔔</text>
+    <view class="subscribe-text">
+      <text class="subscribe-title">开启新订单通知</text>
+      <text class="subscribe-desc">有新订单时第一时间提醒您，避免错过</text>
+    </view>
+    <view class="subscribe-btn">立即开启</view>
+    <text class="subscribe-close" catchtap="closeSubscribe">✕</text>
+  </view>
+
+  <!-- 顶部商户信息 -->
+  <view class="merchant-header">
+    <view class="merchant-info">
+      <text class="merchant-name">{{merchant.name || '我的店铺'}}</text>
+      <text class="merchant-type">{{typeMap[merchant.type] || '本地生活'}}</text>
+    </view>
+    <view class="merchant-status {{merchant.status === 1 ? 'online' : 'offline'}}">
+      {{merchant.status === 1 ? '营业中' : '已歇业'}}
+    </view>
+  </view>
+
+  <!-- 今日数据概览 -->
+  <view class="stats-card">
+    <view class="stats-title">今日概览</view>
+    <view class="stats-grid">
+      <view class="stats-item">
+        <text class="stats-num">{{todayStats.orderCount || 0}}</text>
+        <text class="stats-label">新增订单</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-num">{{todayStats.revenue || 0}}</text>
+        <text class="stats-label">今日营收</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-num">{{todayStats.pendingCount || 0}}</text>
+        <text class="stats-label">待处理</text>
+      </view>
+      <view class="stats-item">
+        <text class="stats-num">{{todayStats.viewCount || 0}}</text>
+        <text class="stats-label">浏览量</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 待处理订单 -->
+  <view class="section" wx:if="{{pendingOrders.length}}">
+    <view class="section-header">
+      <text class="section-title">待处理订单 ({{pendingOrders.length}})</text>
+      <text class="section-more" bindtap="goOrderManage">查看全部 ></text>
+    </view>
+    <view class="pending-order card" wx:for="{{pendingOrders}}" wx:key="_id">
+      <view class="flex-between">
+        <text class="order-customer">{{item.guestName || '客户'}}</text>
+        <text class="order-time">{{item.createdAt}}</text>
+      </view>
+      <view class="order-desc">
+        <text>{{item.roomName || item.storeName}}</text>
+        <text wx:if="{{item.checkInDate}}"> · {{item.checkInDate}}入住</text>
+      </view>
+      <view class="flex-between order-bottom">
+        <text class="price">{{item.totalPrice}}</text>
+        <view class="flex">
+          <view class="btn-sm" bindtap="handleOrder" data-id="{{item._id}}" data-action="accept">接单</view>
+          <view class="btn-sm danger" bindtap="handleOrder" data-id="{{item._id}}" data-action="reject">拒绝</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷操作 -->
+  <view class="quick-actions">
+    <view class="quick-title">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="goStoreEdit">
+        <text class="action-icon">🏪</text>
+        <text class="action-name">店铺设置</text>
+      </view>
+      <view class="action-item" bindtap="goRoomManage" wx:if="{{merchant.type === 'hotel'}}">
+        <text class="action-icon">🛏️</text>
+        <text class="action-name">房型管理</text>
+      </view>
+      <view class="action-item" bindtap="goProductManage">
+        <text class="action-icon">📦</text>
+        <text class="action-name">商品管理</text>
+      </view>
+      <view class="action-item" bindtap="goOrderManage">
+        <text class="action-icon">📋</text>
+        <text class="action-name">全部订单</text>
+      </view>
+    </view>
+  </view>
+</view>

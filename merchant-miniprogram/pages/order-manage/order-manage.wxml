@@ -1,0 +1,61 @@
+<!--pages/order-manage/order-manage.wxml-->
+<view class="order-manage-page">
+  <!-- 顶部Tab -->
+  <scroll-view scroll-x class="order-tabs">
+    <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">全部</view>
+    <view class="tab-item {{currentTab === 'pending' ? 'active' : ''}}" bindtap="switchTab" data-tab="pending">
+      待处理
+      <view class="badge" wx:if="{{pendingCount > 0}}">{{pendingCount}}</view>
+    </view>
+    <view class="tab-item {{currentTab === 'paid' ? 'active' : ''}}" bindtap="switchTab" data-tab="paid">已支付</view>
+    <view class="tab-item {{currentTab === 'completed' ? 'active' : ''}}" bindtap="switchTab" data-tab="completed">已完成</view>
+    <view class="tab-item {{currentTab === 'cancelled' ? 'active' : ''}}" bindtap="switchTab" data-tab="cancelled">已取消</view>
+  </scroll-view>
+
+  <!-- 订单列表 -->
+  <view class="order-list" wx:if="{{orders.length}}">
+    <view class="order-card card" wx:for="{{orders}}" wx:key="_id" bindtap="goDetail" data-id="{{item._id}}">
+      <view class="flex-between">
+        <view class="flex">
+          <text class="order-type-tag {{item.type}}">{{typeMap[item.type]}}</text>
+          <text class="order-no">No.{{item.orderNo}}</text>
+        </view>
+        <text class="order-status {{item.status}}">{{statusMap[item.status]}}</text>
+      </view>
+
+      <view class="order-body">
+        <image class="order-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <view class="order-info">
+          <text class="order-name">{{item.roomName || item.storeName}}</text>
+          <view class="order-detail" wx:if="{{item.checkInDate}}">
+            <text>{{item.checkInDate}} ~ {{item.checkOutDate}}</text>
+            <text> · {{item.nights}}晚</text>
+          </view>
+          <view class="order-customer" wx:if="{{item.guestName}}">
+            <text>{{item.guestName}}</text>
+            <text> · {{item.guestPhone}}</text>
+          </view>
+          <view class="order-address" wx:if="{{item.address}}">
+            <text>{{item.address.name}} {{item.address.phone}}</text>
+            <text class="block">{{item.address.province}}{{item.address.city}}{{item.address.detail}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="flex-between order-footer">
+        <text class="price">{{item.totalPrice}}</text>
+        <view class="flex">
+          <view class="btn-sm" wx:if="{{item.status === 'pending'}}" catchtap="handleOrder" data-id="{{item._id}}" data-action="accept">接单</view>
+          <view class="btn-sm danger" wx:if="{{item.status === 'pending'}}" catchtap="handleOrder" data-id="{{item._id}}" data-action="reject">拒绝</view>
+          <view class="btn-sm" wx:if="{{item.status === 'paid'}}" catchtap="handleOrder" data-id="{{item._id}}" data-action="completed">确认完成</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && !orders.length}}">
+    <text class="empty-icon">📋</text>
+    <text class="empty-text">暂无订单</text>
+  </view>
+</view>
