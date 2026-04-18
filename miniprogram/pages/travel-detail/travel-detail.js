@@ -1,6 +1,7 @@
 const db = wx.cloud.database()
+const { addBrowseHistory } = require('../../utils/history')
 Page({
-  data: { store: {}, nearbyFoods: [], storeId: '' },
+  data: { store: {}, nearbyFoods: [], storeId: '', reviews: [], avgRating: 0, reviewCount: 0 },
   onLoad(options) {
     this.setData({ storeId: options.id })
     this.loadDetail(options.id)
@@ -12,7 +13,17 @@ Page({
       db.collection('stores').where({ type: 'food', status: 1 }).limit(6).get()
     ])
     this.setData({ store: store.data, nearbyFoods: foods.data })
+    addBrowseHistory({ id, type: 'travel', name: store.data.name, coverImage: store.data.coverImage })
+    this.loadReviews(id)
     wx.hideLoading()
+  },
+  async loadReviews(storeId) {
+    try {
+      const { result } = await wx.cloud.callFunction({ name: 'review', data: { action: 'list', storeId, page: 1 } })
+      if (result.code === 0) {
+        this.setData({ reviews: result.data.slice(0, 3), avgRating: result.avgRating || 0, reviewCount: result.total || 0 })
+      }
+    } catch (e) {}
   },
   previewImage(e) { wx.previewImage({ urls: e.currentTarget.dataset.urls, current: e.currentTarget.dataset.urls[e.currentTarget.dataset.current] }) },
   openMap() {

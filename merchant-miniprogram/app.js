@@ -7,7 +7,7 @@ App({
   onLaunch() {
     if (wx.cloud) {
       wx.cloud.init({
-        env: 'local-life-xxxxx', // 替换为你的云开发环境ID（和用户端同一个）
+        env: 'cloud1-5gtgqlar51205e68', // 云开发环境ID（和用户端同一个）
         traceUser: true
       })
     }

@@ -6,6 +6,11 @@
     </swiper-item>
   </swiper>
 
+  <!-- 收藏按钮 -->
+  <view class="favorite-btn" bindtap="toggleFavorite">
+    <text class="fav-icon">{{isFavorite ? '❤️' : '🤍'}}</text>
+  </view>
+
   <view class="card">
     <text class="store-name">{{item.name}}</text>
     <view class="flex-between" style="margin-top:12rpx">
@@ -25,14 +30,54 @@
     <text class="store-desc">{{item.description}}</text>
   </view>
 
+  <!-- 评价区域 -->
+  <view class="card">
+    <view class="flex-between" bindtap="goReviewList">
+      <view class="flex">
+        <text class="card-title" style="margin-bottom:0">用户评价</text>
+        <text class="review-count" wx:if="{{reviewCount}}">({{reviewCount}})</text>
+      </view>
+      <view class="flex" wx:if="{{reviewCount}}">
+        <text class="review-avg">{{avgRating}}⭐</text>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+    <view class="review-list" wx:if="{{reviews.length}}">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="_id">
+        <view class="flex">
+          <image class="review-avatar" src="{{item.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"/>
+          <view class="review-meta">
+            <text class="review-name">{{item.nickName || '匿名用户'}}</text>
+            <text class="review-stars">{{'⭐'.repeat(item.rating)}}</text>
+          </view>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <view class="review-images" wx:if="{{item.images && item.images.length}}">
+          <image wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" class="review-img" bindtap="previewImage" data-urls="{{item.images}}"/>
+        </view>
+      </view>
+    </view>
+    <view class="empty-mini" wx:if="{{!reviews.length}}">
+      <text>暂无评价</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
   <view class="bottom-bar">
-    <view class="flex" style="flex:1">
+    <view class="bottom-left">
+      <view class="cart-entry" bindtap="goCart">
+        <text class="cart-icon">🛒</text>
+        <text class="cart-text">购物车</text>
+      </view>
       <view class="buy-qty">
         <text class="qty-btn" bindtap="decreaseQty">-</text>
         <text class="qty-num">{{quantity}}</text>
         <text class="qty-btn" bindtap="increaseQty">+</text>
       </view>
-      <view class="btn-primary" bindtap="onBuyNow" style="flex:1;margin-left:20rpx">立即购买</view>
+    </view>
+    <view class="bottom-right">
+      <view class="btn-cart" bindtap="onAddToCart">加入购物车</view>
+      <view class="btn-primary" bindtap="onBuyNow">立即购买</view>
     </view>
   </view>
 </view>

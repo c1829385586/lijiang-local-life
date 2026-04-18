@@ -1,5 +1,6 @@
 // pages/hotel-detail/hotel-detail.js
 const db = wx.cloud.database()
+const { addBrowseHistory } = require('../../utils/history')
 
 Page({
   data: {
@@ -13,6 +14,9 @@ Page({
     checkOutDate: '',
     nights: 1,
     totalPrice: 0,
+    reviews: [],
+    avgRating: 0,
+    reviewCount: 0,
     defaultServices: [
       { icon: '🅿️', name: '免费停车' },
       { icon: '📶', name: '免费WiFi' },
@@ -54,11 +58,38 @@ Page({
         nearbyFoods: foods.data,
         nearbyProducts: products.data
       })
+
+      // 记录浏览历史
+      addBrowseHistory({
+        id,
+        type: 'hotel',
+        name: store.data.name,
+        coverImage: store.data.coverImage
+      })
+
+      // 加载评价
+      this.loadReviews(id)
     } catch (e) {
       console.error(e)
       wx.showToast({ title: '加载失败', icon: 'none' })
     }
     wx.hideLoading()
+  },
+
+  async loadReviews(storeId) {
+    try {
+      const { result } = await wx.cloud.callFunction({
+        name: 'review',
+        data: { action: 'list', storeId, page: 1 }
+      })
+      if (result.code === 0) {
+        this.setData({
+          reviews: result.data.slice(0, 2),
+          avgRating: result.avgRating || 0,
+          reviewCount: result.total || 0
+        })
+      }
+    } catch (e) { /* no reviews */ }
   },
 
   previewImage(e) {

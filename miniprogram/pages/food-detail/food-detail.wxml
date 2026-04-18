@@ -45,6 +45,34 @@
     </view>
   </view>
 
+  <!-- 评价区域 -->
+  <view class="card">
+    <view class="flex-between">
+      <view class="flex">
+        <text class="card-title" style="margin-bottom:0">食客评价</text>
+        <text class="review-count" wx:if="{{reviewCount}}">({{reviewCount}})</text>
+      </view>
+      <view class="flex" wx:if="{{reviewCount}}">
+        <text class="review-avg">{{avgRating}}⭐</text>
+      </view>
+    </view>
+    <view class="review-list" wx:if="{{reviews.length}}">
+      <view class="review-item" wx:for="{{reviews}}" wx:key="_id">
+        <view class="flex">
+          <image class="review-avatar" src="{{item.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"/>
+          <view class="review-meta">
+            <text class="review-name">{{item.nickName || '匿名用户'}}</text>
+            <text class="review-stars">{{'⭐'.repeat(item.rating)}}</text>
+          </view>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+      </view>
+    </view>
+    <view class="empty-mini" wx:if="{{!reviews.length}}">
+      <text class="empty-mini-text">暂无评价</text>
+    </view>
+  </view>
+
   <view class="bottom-bar">
     <view class="btn-primary" bindtap="openMap" style="flex:1">导航到店</view>
   </view>

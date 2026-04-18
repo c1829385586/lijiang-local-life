@@ -20,6 +20,20 @@
 .room-desc { font-size: 22rpx; color: #999; }
 .room-stock { font-size: 22rpx; color: #4CD964; }
 .room-stock.sold-out { color: #999; }
+
+/* 评价 */
+.review-count { font-size: 24rpx; color: #999; margin-left: 8rpx; }
+.review-avg { font-size: 24rpx; color: #FF9500; }
+.review-list { margin-top: 16rpx; }
+.review-item { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.review-item:last-child { border-bottom: none; }
+.review-avatar { width: 56rpx; height: 56rpx; border-radius: 50%; flex-shrink: 0; }
+.review-meta { margin-left: 12rpx; }
+.review-name { font-size: 26rpx; display: block; }
+.review-stars { font-size: 20rpx; }
+.review-content { font-size: 26rpx; color: #333; margin: 12rpx 0; display: block; line-height: 1.6; }
+.empty-mini { text-align: center; padding: 20rpx; }
+.empty-mini-text { font-size: 24rpx; color: #ccc; }
 .scroll-h { white-space: nowrap; padding: 12rpx 0; }
 .nearby-item { display: inline-block; width: 200rpx; margin-right: 16rpx; }
 .nearby-img { width: 200rpx; height: 200rpx; border-radius: 12rpx; }

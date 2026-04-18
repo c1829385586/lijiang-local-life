@@ -221,6 +221,18 @@
 .menu-icon-wrap.cart { background: #EDFAF0; }
 .menu-icon-wrap.service { background: #F0F0FF; }
 .menu-icon-wrap.about { background: #FFF8E8; }
+.menu-icon-wrap.fav { background: #FFF0F0; }
+.menu-icon-wrap.hist { background: #F0F0F5; }
+.menu-icon-wrap.review { background: #FFF8E0; }
+.menu-icon-wrap.coupon { background: #FFF0E6; }
+
+.menu-emoji { font-size: 34rpx; }
+.menu-badge {
+  font-size: 20rpx; color: #fff; background: #FF3B30;
+  min-width: 32rpx; height: 32rpx; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 8rpx; margin-right: 12rpx;
+}
 
 .menu-icon {
   width: 34rpx;

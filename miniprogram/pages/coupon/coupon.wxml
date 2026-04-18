@@ -5,7 +5,14 @@
     <text class="coupon-subtitle">领券下单更划算</text>
   </view>
 
-  <view class="coupon-list">
+  <!-- Tab -->
+  <view class="coupon-tabs">
+    <view class="coupon-tab {{currentTab === 'available' ? 'active' : ''}}" bindtap="switchTab" data-tab="available">可领取</view>
+    <view class="coupon-tab {{currentTab === 'mine' ? 'active' : ''}}" bindtap="switchTab" data-tab="mine">我的优惠券</view>
+  </view>
+
+  <!-- 可领取列表 -->
+  <view class="coupon-list" wx:if="{{currentTab === 'available'}}">
     <view class="coupon-card {{item.used ? 'used' : ''}}" wx:for="{{coupons}}" wx:key="_id">
       <view class="coupon-left">
         <text class="coupon-value" wx:if="{{item.type === '满减' || item.type === '立减'}}">¥<text class="value-num">{{item.value}}</text></text>
@@ -18,14 +25,45 @@
         <text class="coupon-name">{{item.name}}</text>
         <text class="coupon-store">{{item.storeName}}</text>
         <text class="coupon-expire">有效期至 {{item.expireDate}}</text>
-        <view class="coupon-btn {{item.used ? 'disabled' : ''}}" bindtap="receiveCoupon" data-id="{{item._id}}">
+        <view class="coupon-progress" wx:if="{{item.total}}">
+          <view class="progress-bar">
+            <view class="progress-fill" style="width:{{item.received / item.total * 100}}%"></view>
+          </view>
+          <text class="progress-text">已领{{item.received || 0}}/{{item.total}}</text>
+        </view>
+        <view class="coupon-btn {{item.used ? 'disabled' : ''}}" catchtap="receiveCoupon" data-id="{{item._id}}" data-coupon="{{item}}">
           {{item.used ? '已领取' : '立即领取'}}
         </view>
       </view>
     </view>
   </view>
 
-  <view class="empty" wx:if="{{!loading && !coupons.length}}">
+  <!-- 我的优惠券 -->
+  <view class="coupon-list" wx:if="{{currentTab === 'mine'}}">
+    <view class="coupon-card {{item.used ? 'used' : ''}}" wx:for="{{myCoupons}}" wx:key="_id">
+      <view class="coupon-left">
+        <text class="coupon-value" wx:if="{{item.type === '满减' || item.type === '立减'}}">¥<text class="value-num">{{item.value}}</text></text>
+        <text class="coupon-value" wx:elif="{{item.type === '折扣'}}"><text class="value-num">{{item.value}}</text>折</text>
+        <text class="coupon-value" wx:elif="{{item.type === '包邮'}}"><text class="value-num">包邮</text></text>
+        <text class="coupon-condition" wx:if="{{item.minPrice}}">满{{item.minPrice}}可用</text>
+        <text class="coupon-condition" wx:else>无门槛</text>
+      </view>
+      <view class="coupon-right">
+        <text class="coupon-name">{{item.name}}</text>
+        <text class="coupon-store">{{item.storeName}}</text>
+        <text class="coupon-expire">有效期至 {{item.expireDate}}</text>
+        <view class="coupon-status-tag {{item.used ? 'used-tag' : 'unused-tag'}}">
+          {{item.used ? '已使用' : '未使用'}}
+        </view>
+      </view>
+    </view>
+    <view class="empty" wx:if="{{!loading && !myCoupons.length}}">
+      <text class="empty-icon">🎫</text>
+      <text class="empty-text">暂无优惠券</text>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{currentTab === 'available' && !loading && !coupons.length}}">
     <text class="empty-icon">🎫</text>
     <text class="empty-text">暂无优惠券</text>
   </view>

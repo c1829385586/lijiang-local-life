@@ -27,7 +27,11 @@
     "pages/merchant-order-manage/merchant-order-manage",
     "pages/merchant-order-detail/merchant-order-detail",
     "pages/merchant-stats/merchant-stats",
-    "pages/merchant-profile/merchant-profile"
+    "pages/merchant-profile/merchant-profile",
+    "pages/favorites/favorites",
+    "pages/browse-history/browse-history",
+    "pages/my-reviews/my-reviews",
+    "pages/order-detail/order-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

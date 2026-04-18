@@ -1,4 +1,4 @@
-.store-detail { padding-bottom: 120rpx; }
+.store-detail { padding-bottom: 140rpx; }
 .detail-swiper { height: 500rpx; }
 .detail-img { width: 100%; height: 500rpx; }
 .store-name { font-size: 36rpx; font-weight: bold; display: block; }
@@ -6,7 +6,47 @@
 .product-sales { font-size: 24rpx; color: #999; }
 .product-deliver { margin-top: 16rpx; font-size: 24rpx; color: #FF6B35; background: #FFF3ED; padding: 12rpx 16rpx; border-radius: 12rpx; }
 .store-desc { font-size: 26rpx; color: #666; line-height: 1.8; }
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); display: flex; }
+
+/* 收藏按钮 */
+.favorite-btn {
+  position: absolute; top: 20rpx; right: 24rpx; z-index: 10;
+  width: 72rpx; height: 72rpx; background: rgba(255,255,255,0.9);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.15);
+}
+.fav-icon { font-size: 36rpx; }
+
+/* 评价 */
+.card-title { font-size: 30rpx; font-weight: bold; display: block; margin-bottom: 16rpx; }
+.review-count { font-size: 24rpx; color: #999; margin-left: 8rpx; }
+.review-avg { font-size: 24rpx; color: #FF9500; margin-right: 8rpx; }
+.review-list { margin-top: 16rpx; }
+.review-item { padding: 16rpx 0; border-bottom: 1rpx solid #f5f5f5; }
+.review-item:last-child { border-bottom: none; }
+.review-avatar { width: 56rpx; height: 56rpx; border-radius: 50%; flex-shrink: 0; }
+.review-meta { margin-left: 12rpx; }
+.review-name { font-size: 26rpx; display: block; }
+.review-stars { font-size: 20rpx; }
+.review-content { font-size: 26rpx; color: #333; margin: 12rpx 0; display: block; line-height: 1.6; }
+.review-images { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 8rpx; }
+.review-img { width: 120rpx; height: 120rpx; border-radius: 8rpx; }
+.empty-mini { text-align: center; padding: 30rpx; color: #999; font-size: 26rpx; }
+
+/* 底部栏 */
+.bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+  padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between;
+}
+.bottom-left { display: flex; align-items: center; }
+.cart-entry { display: flex; flex-direction: column; align-items: center; margin-right: 24rpx; }
+.cart-icon { font-size: 40rpx; }
+.cart-text { font-size: 20rpx; color: #666; }
 .buy-qty { display: flex; align-items: center; }
-.qty-btn { width: 56rpx; height: 56rpx; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32rpx; }
-.qty-num { min-width: 60rpx; text-align: center; font-size: 30rpx; font-weight: bold; }
+.qty-btn { width: 52rpx; height: 52rpx; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30rpx; }
+.qty-num { min-width: 56rpx; text-align: center; font-size: 28rpx; font-weight: bold; }
+.bottom-right { display: flex; gap: 12rpx; }
+.btn-cart {
+  background: #FFF3ED; color: #FF6B35; border-radius: 44rpx;
+  font-size: 28rpx; padding: 16rpx 32rpx; text-align: center;
+}
