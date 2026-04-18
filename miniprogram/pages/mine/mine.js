@@ -14,7 +14,7 @@ Page({
   goOrders(e) {
     const status = e.currentTarget.dataset.status || 'all'
     wx.setStorageSync('order_tab_status', status)
-    wx.switchTab({ url: '/pages/order/order' })
+    wx.navigateTo({ url: '/pages/order/order' })
   },
   goAddress() { wx.navigateTo({ url: '/pages/address/address' }) },
   goCart() { wx.navigateTo({ url: '/pages/cart/cart' }) },
