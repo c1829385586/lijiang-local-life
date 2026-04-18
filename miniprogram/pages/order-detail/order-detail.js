@@ -97,26 +97,7 @@ Page({
 
   goReview() {
     const order = this.data.order
-    wx.showModal({
-      title: '评价',
-      editable: true,
-      placeholderText: '请输入评价内容',
-      success: async (res) => {
-        if (res.confirm && res.content) {
-          try {
-            await wx.cloud.callFunction({
-              name: 'review',
-              data: {
-                action: 'create',
-                reviewData: { orderId: order._id, rating: 5, content: res.content }
-              }
-            })
-            wx.showToast({ title: '评价成功', icon: 'success' })
-            this.loadOrder(order._id)
-          } catch (e) { wx.showToast({ title: '评价失败', icon: 'none' }) }
-        }
-      }
-    })
+    wx.navigateTo({ url: `/pages/review-create/review-create?orderId=${order._id}` })
   },
 
   goStore() {

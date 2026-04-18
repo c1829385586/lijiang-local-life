@@ -31,8 +31,12 @@ Page({
 
   async loadData() {
     const app = getApp()
-    const merchantId = app.globalData.merchantInfo?._id
-    if (!merchantId) return
+    const merchant = app.globalData.merchantInfo
+    if (!merchant) return
+
+    // Use storeId (关联的店铺ID) to query orders, not merchant._id
+    const storeId = merchant.storeId || merchant._id
+    if (!storeId) return
 
     try {
       const today = new Date()
@@ -40,15 +44,15 @@ Page({
 
       const [ordersToday, pendingOrders, allOrders] = await Promise.all([
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           createdAt: _.gte(today)
         }).count(),
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           status: 'pending'
         }).orderBy('createdAt', 'desc').limit(5).get(),
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           createdAt: _.gte(today)
         }).get()
       ])

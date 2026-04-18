@@ -8,11 +8,20 @@
 .info-label { width: 140rpx; font-size: 28rpx; color: #666; }
 .info-value { flex: 1; font-size: 28rpx; }
 .info-input { flex: 1; font-size: 28rpx; }
-.order-item { display: flex; align-items: center; }
+.store-header { display: flex; align-items: center; gap: 12rpx; }
+.store-type-tag { font-size: 22rpx; padding: 4rpx 12rpx; border-radius: 8rpx; color: #fff; }
+.store-type-tag.hotel { background: #4A90B8; }
+.store-type-tag.food { background: #E8885A; }
+.store-type-tag.travel { background: #6AAF7C; }
+.store-type-tag.product { background: #8B7EC8; }
+.store-name-text { font-size: 30rpx; font-weight: bold; }
+.order-item { display: flex; align-items: center; margin-bottom: 16rpx; }
+.order-item:last-child { margin-bottom: 0; }
 .order-img { width: 140rpx; height: 140rpx; border-radius: 12rpx; flex-shrink: 0; }
 .order-info { flex: 1; margin-left: 16rpx; }
 .order-name { font-size: 28rpx; font-weight: bold; display: block; }
-.order-desc { font-size: 24rpx; color: #666; display: block; }
+.order-desc { font-size: 24rpx; color: #666; display: block; margin-top: 4rpx; }
+.order-sub { font-size: 22rpx; color: #999; display: block; margin-top: 4rpx; }
 .order-qty { font-size: 24rpx; color: #999; }
 .remark-input { width: 100%; height: 120rpx; font-size: 26rpx; }
 .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); }

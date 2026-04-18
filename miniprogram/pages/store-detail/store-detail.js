@@ -23,9 +23,11 @@ Page({
   },
   async loadReviews(id) {
     try {
+      // For products, use the storeId to load store reviews
+      const storeId = this.data.type === 'product' ? (this.data.item.storeId || id) : id
       const { result } = await wx.cloud.callFunction({
         name: 'review',
-        data: { action: 'list', storeId: id, page: 1 }
+        data: { action: 'list', storeId, page: 1 }
       })
       if (result.code === 0) {
         this.setData({

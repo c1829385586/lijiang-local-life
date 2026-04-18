@@ -24,9 +24,9 @@
     </view>
   </view>
   <view class="menu-card card">
-    <view class="menu-item" bindtap="toggleStatus">
+    <view class="menu-item">
       <text>{{merchant.status === 1 ? '🟢 营业中' : '🔴 已歇业'}}</text>
-      <switch checked="{{merchant.status === 1}}" bindchange="toggleStatus" color="#2C3E50"/>
+      <switch checked="{{merchant.status === 1}}" bindchange="onStatusSwitch" color="#2C3E50"/>
     </view>
     <view class="menu-item" bindtap="contactSupport">
       <text>💬 联系平台客服</text>

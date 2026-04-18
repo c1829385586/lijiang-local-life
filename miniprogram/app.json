@@ -31,7 +31,8 @@
     "pages/favorites/favorites",
     "pages/browse-history/browse-history",
     "pages/my-reviews/my-reviews",
-    "pages/order-detail/order-detail"
+    "pages/order-detail/order-detail",
+    "pages/review-create/review-create"
   ],
   "window": {
     "backgroundTextStyle": "light",

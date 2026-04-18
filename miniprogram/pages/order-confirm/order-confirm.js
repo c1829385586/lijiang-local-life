@@ -77,6 +77,10 @@ Page({
       wx.showToast({ title: '请填写入住信息', icon: 'none' })
       return
     }
+    if ((orderData.type === 'food' || orderData.type === 'travel') && (!guestName || !guestPhone)) {
+      wx.showToast({ title: '请填写联系人信息', icon: 'none' })
+      return
+    }
 
     this.setData({ loading: true })
 

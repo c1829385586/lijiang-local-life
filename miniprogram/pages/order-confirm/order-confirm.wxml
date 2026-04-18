@@ -39,14 +39,66 @@
     </view>
   </view>
 
+  <!-- 联系人信息（美食/游玩） -->
+  <view class="card" wx:if="{{orderData.type === 'food' || orderData.type === 'travel'}}">
+    <text class="card-title">联系人信息</text>
+    <view class="info-row">
+      <text class="info-label">联系人</text>
+      <input class="info-input" placeholder="请输入联系人姓名" bindinput="onGuestInput" value="{{guestName}}"/>
+    </view>
+    <view class="info-row">
+      <text class="info-label">手机号</text>
+      <input class="info-input" placeholder="请输入手机号" type="number" bindinput="onPhoneInput" value="{{guestPhone}}"/>
+    </view>
+  </view>
+
+  <!-- 店铺信息 -->
+  <view class="card">
+    <view class="store-header">
+      <text class="store-type-tag {{orderData.type}}">{{orderData.type === 'hotel' ? '酒店民宿' : orderData.type === 'food' ? '美食' : orderData.type === 'travel' ? '周边游玩' : '特产零食'}}</text>
+      <text class="store-name-text">{{orderData.storeName}}</text>
+    </view>
+  </view>
+
   <!-- 商品信息 -->
   <view class="card">
     <text class="card-title">订单详情</text>
-    <view class="order-item">
+    <!-- 酒店房型 -->
+    <view class="order-item" wx:if="{{orderData.type === 'hotel'}}">
       <image class="order-img" src="{{orderData.coverImage}}" mode="aspectFill"/>
       <view class="order-info">
-        <text class="order-name">{{orderData.storeName || orderData.productName}}</text>
-        <text class="order-desc" wx:if="{{orderData.roomName}}">{{orderData.roomName}}</text>
+        <text class="order-name">{{orderData.storeName}}</text>
+        <text class="order-desc">{{orderData.roomName}}</text>
+        <text class="order-sub">{{orderData.checkInDate}} ~ {{orderData.checkOutDate}} · {{orderData.nights}}晚</text>
+      </view>
+      <text class="price">{{orderData.totalPrice}}</text>
+    </view>
+    <!-- 美食/游玩 -->
+    <view class="order-item" wx:elif="{{orderData.type === 'food' || orderData.type === 'travel'}}">
+      <image class="order-img" src="{{orderData.coverImage}}" mode="aspectFill"/>
+      <view class="order-info">
+        <text class="order-name">{{orderData.storeName}}</text>
+        <text class="order-desc" wx:if="{{orderData.type === 'food'}}">到店用餐</text>
+        <text class="order-desc" wx:else>景区门票</text>
+      </view>
+      <text class="price">{{orderData.totalPrice}}</text>
+    </view>
+    <!-- 商品列表 -->
+    <block wx:elif="{{orderData.type === 'product' && orderData.products && orderData.products.length}}">
+      <view class="order-item" wx:for="{{orderData.products}}" wx:key="_id">
+        <image class="order-img" src="{{item.coverImage}}" mode="aspectFill"/>
+        <view class="order-info">
+          <text class="order-name">{{item.name}}</text>
+          <text class="order-desc">x{{item.quantity}}</text>
+        </view>
+        <text class="price">{{item.price * item.quantity}}</text>
+      </view>
+    </block>
+    <!-- 单商品 -->
+    <view class="order-item" wx:elif="{{orderData.type === 'product'}}">
+      <image class="order-img" src="{{orderData.coverImage}}" mode="aspectFill"/>
+      <view class="order-info">
+        <text class="order-name">{{orderData.productName || orderData.storeName}}</text>
         <text class="order-qty" wx:if="{{orderData.quantity}}">x{{orderData.quantity}}</text>
       </view>
       <text class="price">{{orderData.totalPrice}}</text>

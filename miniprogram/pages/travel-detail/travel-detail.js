@@ -31,5 +31,19 @@ Page({
     wx.openLocation({ latitude: store.latitude, longitude: store.longitude, name: store.name, address: store.address, scale: 18 })
   },
   goFood(e) { wx.navigateTo({ url: `/pages/food-detail/food-detail?id=${e.currentTarget.dataset.id}` }) },
+
+  // 立即预订
+  onBookNow() {
+    const { store } = this.data
+    const orderData = encodeURIComponent(JSON.stringify({
+      type: 'travel',
+      storeId: store._id,
+      storeName: store.name,
+      totalPrice: store.price || 0,
+      coverImage: store.coverImage || (store.images && store.images[0]) || ''
+    }))
+    wx.navigateTo({ url: `/pages/order-confirm/order-confirm?data=${orderData}` })
+  },
+
   onShareAppMessage() { return { title: this.data.store.name, path: `/pages/travel-detail/travel-detail?id=${this.data.storeId}` } }
 })

@@ -1,0 +1,128 @@
+/* pages/review-create/review-create.wxss */
+.review-page {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.order-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.order-store {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+.order-type {
+  font-size: 24rpx;
+  color: #FF6B35;
+  background: #FFF3ED;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+}
+.star-list {
+  display: flex;
+  gap: 12rpx;
+}
+.star {
+  font-size: 56rpx;
+  color: #ddd;
+  transition: transform 0.15s;
+}
+.star.active {
+  color: #FF9500;
+}
+.rating-text {
+  font-size: 26rpx;
+  color: #FF9500;
+  margin-left: 24rpx;
+}
+
+.review-textarea {
+  width: 100%;
+  height: 240rpx;
+  font-size: 28rpx;
+  padding: 16rpx;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  margin-top: 12rpx;
+  box-sizing: border-box;
+}
+.word-count {
+  font-size: 22rpx;
+  color: #ccc;
+  text-align: right;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 16rpx;
+}
+.image-item {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+}
+.preview-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+}
+.remove-btn {
+  position: absolute;
+  top: -12rpx;
+  right: -12rpx;
+  width: 36rpx;
+  height: 36rpx;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  line-height: 1;
+}
+.add-image {
+  width: 160rpx;
+  height: 160rpx;
+  border: 2rpx dashed #ddd;
+  border-radius: 12rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.add-icon {
+  font-size: 48rpx;
+  color: #ccc;
+  line-height: 1;
+}
+.add-text {
+  font-size: 22rpx;
+  color: #ccc;
+  margin-top: 8rpx;
+}
+
+.submit-area {
+  padding: 30rpx 24rpx;
+}
+.submit-btn {
+  width: 100%;
+  font-size: 32rpx;
+  padding: 24rpx 0;
+}
+.disabled {
+  opacity: 0.5;
+}

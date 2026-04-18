@@ -21,6 +21,12 @@ Page({
       wx.showToast({ title: newStatus === 1 ? '已开启营业' : '已歇业', icon: 'success' })
     } catch (e) { wx.showToast({ title: '操作失败', icon: 'none' }) }
   },
+  onStatusSwitch(e) {
+    // Switch组件触发
+    const newStatus = e.detail.value ? 1 : 2
+    if (newStatus === this.data.merchant.status) return
+    this.toggleStatus()
+  },
   contactSupport() { wx.makePhoneCall({ phoneNumber: '4000000000' }) },
   logout() {
     wx.showModal({
@@ -30,7 +36,7 @@ Page({
         if (res.confirm) {
           getApp().globalData.merchantInfo = null
           getApp().globalData.isMerchantLogin = false
-          wx.navigateBack()
+          wx.switchTab({ url: '/pages/home/home' })
         }
       }
     })

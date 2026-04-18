@@ -25,4 +25,8 @@
 .nearby-card { display: inline-block; width: 200rpx; margin-right: 16rpx; }
 .nearby-img { width: 200rpx; height: 140rpx; border-radius: 12rpx; }
 .nearby-name { font-size: 24rpx; display: block; }
-.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); }
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); display: flex; align-items: center; gap: 24rpx; }
+.bottom-actions { display: flex; gap: 32rpx; }
+.bottom-action-item { display: flex; flex-direction: column; align-items: center; }
+.action-icon { font-size: 36rpx; }
+.action-text { font-size: 20rpx; color: #666; margin-top: 4rpx; }

@@ -75,6 +75,12 @@
   </view>
 
   <view class="bottom-bar">
-    <view class="btn-primary" bindtap="openMap" style="flex:1">导航到这里</view>
+    <view class="bottom-actions">
+      <view class="bottom-action-item" bindtap="openMap">
+        <text class="action-icon">📍</text>
+        <text class="action-text">导航</text>
+      </view>
+    </view>
+    <view class="btn-primary" bindtap="onBookNow" style="flex:1">立即预订</view>
   </view>
 </view>

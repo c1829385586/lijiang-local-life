@@ -27,7 +27,27 @@ Page({
     const { store } = this.data
     wx.openLocation({ latitude: store.latitude, longitude: store.longitude, name: store.name, address: store.address, scale: 18 })
   },
-  callPhone() { wx.makePhoneCall({ phoneNumber: this.data.store.phone }) },
+  callPhone() { 
+    if (this.data.store.phone) {
+      wx.makePhoneCall({ phoneNumber: this.data.store.phone })
+    } else {
+      wx.showToast({ title: '暂无电话', icon: 'none' })
+    }
+  },
+
+  // 立即预订
+  onBookNow() {
+    const { store } = this.data
+    const orderData = encodeURIComponent(JSON.stringify({
+      type: 'food',
+      storeId: store._id,
+      storeName: store.name,
+      totalPrice: store.avgPrice || store.minPrice || 0,
+      coverImage: store.coverImage || (store.images && store.images[0]) || ''
+    }))
+    wx.navigateTo({ url: `/pages/order-confirm/order-confirm?data=${orderData}` })
+  },
+
   onShareAppMessage() {
     return { title: this.data.store.name, path: `/pages/food-detail/food-detail?id=${this.data.storeId}` }
   }

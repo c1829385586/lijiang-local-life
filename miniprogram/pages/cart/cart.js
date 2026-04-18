@@ -59,6 +59,25 @@ Page({
 
   saveCart() { wx.setStorageSync('cart', this.data.cartItems) },
 
+  // 清空购物车
+  clearAll() {
+    wx.showModal({
+      title: '确认清空',
+      content: '确定清空购物车？',
+      success: (res) => {
+        if (res.confirm) {
+          wx.setStorageSync('cart', [])
+          this.setData({ cartItems: [], totalPrice: '0.00', checkedCount: 0, allChecked: false })
+        }
+      }
+    })
+  },
+
+  // 去逛逛
+  goShopping() {
+    wx.switchTab({ url: '/pages/home/home' })
+  },
+
   onCheckout() {
     const checked = this.data.cartItems.filter(i => i.checked)
     if (!checked.length) { wx.showToast({ title: '请选择商品', icon: 'none' }); return }

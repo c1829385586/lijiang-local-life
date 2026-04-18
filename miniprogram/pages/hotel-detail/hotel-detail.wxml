@@ -115,7 +115,7 @@
   <view class="card">
     <text class="card-title">🍜 周边美食送到房间</text>
     <scroll-view scroll-x class="scroll-h">
-      <view class="nearby-item" wx:for="{{nearbyFoods}}" wx:key="_id">
+      <view class="nearby-item" wx:for="{{nearbyFoods}}" wx:key="_id" bindtap="goFood" data-id="{{item._id}}">
         <image class="nearby-img" src="{{item.coverImage}}" mode="aspectFill"/>
         <text class="nearby-name ellipsis">{{item.name}}</text>
         <text class="price">{{item.price}}</text>
@@ -126,7 +126,7 @@
   <view class="card">
     <text class="card-title">🎁 特产零食送到房间</text>
     <scroll-view scroll-x class="scroll-h">
-      <view class="nearby-item" wx:for="{{nearbyProducts}}" wx:key="_id">
+      <view class="nearby-item" wx:for="{{nearbyProducts}}" wx:key="_id" bindtap="goProduct" data-id="{{item._id}}">
         <image class="nearby-img" src="{{item.coverImage}}" mode="aspectFill"/>
         <text class="nearby-name ellipsis">{{item.name}}</text>
         <text class="price">{{item.price}}</text>

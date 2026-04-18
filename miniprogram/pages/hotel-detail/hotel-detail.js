@@ -160,6 +160,14 @@ Page({
     wx.navigateTo({ url: `/pages/order-confirm/order-confirm?data=${orderData}` })
   },
 
+  goFood(e) {
+    wx.navigateTo({ url: `/pages/food-detail/food-detail?id=${e.currentTarget.dataset.id}` })
+  },
+
+  goProduct(e) {
+    wx.navigateTo({ url: `/pages/store-detail/store-detail?type=product&id=${e.currentTarget.dataset.id}` })
+  },
+
   onShareAppMessage() {
     const { store } = this.data
     return {

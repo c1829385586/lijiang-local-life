@@ -1,0 +1,60 @@
+<!--pages/review-create/review-create.wxml-->
+<view class="review-page">
+  <!-- 订单信息 -->
+  <view class="card order-info" wx:if="{{order.storeName}}">
+    <text class="order-store">{{order.storeName}}</text>
+    <text class="order-type">{{order.type === 'hotel' ? '酒店民宿' : order.type === 'food' ? '美食' : order.type === 'travel' ? '周边游玩' : '特产零食'}}</text>
+  </view>
+
+  <!-- 评分 -->
+  <view class="card">
+    <text class="card-title">评分</text>
+    <view class="rating-row">
+      <view class="star-list">
+        <text
+          class="star {{rating >= item ? 'active' : ''}}"
+          wx:for="{{5}}"
+          wx:key="*this"
+          bindtap="onSelectRating"
+          data-rating="{{item}}"
+        >{{rating >= item ? '⭐' : '☆'}}</text>
+      </view>
+      <text class="rating-text">{{ratingTexts[rating - 1]}}</text>
+    </view>
+  </view>
+
+  <!-- 评价内容 -->
+  <view class="card">
+    <text class="card-title">评价内容</text>
+    <textarea
+      class="review-textarea"
+      placeholder="分享你的体验，帮助其他用户做出更好的选择..."
+      maxlength="500"
+      bindinput="onInput"
+      value="{{content}}"
+    />
+    <text class="word-count">{{content.length}}/500</text>
+  </view>
+
+  <!-- 上传图片 -->
+  <view class="card">
+    <text class="card-title">上传图片（选填）</text>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{images}}" wx:key="*this">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}"/>
+        <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="add-image" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-area">
+    <view class="btn-primary submit-btn {{submitting ? 'disabled' : ''}}" bindtap="onSubmit">
+      {{submitting ? '提交中...' : '提交评价'}}
+    </view>
+  </view>
+</view>

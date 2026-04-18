@@ -1,12 +1,28 @@
 .cart-page { padding-bottom: 120rpx; }
+.cart-header { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 24rpx; background: #fff; }
+.cart-count { font-size: 30rpx; font-weight: bold; }
+.cart-clear { font-size: 26rpx; color: #999; }
+
+.custom-checkbox { width: 40rpx; height: 40rpx; border: 2rpx solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24rpx; color: #fff; flex-shrink: 0; }
+.custom-checkbox.checked { background: #FF6B35; border-color: #FF6B35; }
+
 .cart-item { position: relative; padding: 20rpx !important; }
 .cart-img { width: 160rpx; height: 160rpx; border-radius: 12rpx; margin-left: 12rpx; flex-shrink: 0; }
-.cart-info { flex: 1; margin-left: 16rpx; display: flex; flex-direction: column; justify-content: space-between; }
-.cart-name { font-size: 28rpx; font-weight: bold; }
+.cart-info { flex: 1; margin-left: 16rpx; display: flex; flex-direction: column; justify-content: space-between; height: 160rpx; }
+.cart-name { font-size: 28rpx; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cart-desc { font-size: 22rpx; color: #FF6B35; }
 .qty-control { display: flex; align-items: center; }
 .qty-btn { width: 48rpx; height: 48rpx; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28rpx; }
 .qty-num { min-width: 48rpx; text-align: center; font-size: 28rpx; }
-.cart-delete { position: absolute; top: 12rpx; right: 16rpx; font-size: 24rpx; color: #999; }
+.cart-delete { position: absolute; top: 12rpx; right: 16rpx; font-size: 24rpx; color: #999; padding: 8rpx; }
+
+.empty { text-align: center; padding: 120rpx 0; }
+.empty-icon { font-size: 80rpx; display: block; }
+.empty-text { font-size: 30rpx; color: #666; margin-top: 16rpx; display: block; }
+.empty-hint { font-size: 24rpx; color: #999; margin-top: 8rpx; display: block; }
+.empty-btn { display: inline-block; margin-top: 30rpx; padding: 16rpx 60rpx; }
+
 .cart-bottom { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.06); }
 .cart-buy { margin-left: 20rpx; padding: 12rpx 40rpx; }
+.total-label { font-size: 24rpx; color: #666; }
+.total-price { font-size: 36rpx; margin-right: 8rpx; }
