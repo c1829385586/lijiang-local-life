@@ -37,9 +37,9 @@
         <text class="price">{{item.totalPrice}}</text>
       </view>
       <view class="order-actions">
-        <view class="action-btn" wx:if="{{item.status === 'pending'}}" bindtap="cancelOrder" data-id="{{item._id}}">取消订单</view>
-        <view class="action-btn primary" wx:if="{{item.status === 'pending'}}" bindtap="goPay" data-id="{{item._id}}">去支付</view>
-        <view class="action-btn" wx:if="{{item.status === 'paid'}}" bindtap="confirmOrder" data-id="{{item._id}}">确认入住</view>
+        <view class="action-btn" wx:if="{{item.status === 'pending'}}" catchtap="cancelOrder" data-id="{{item._id}}">取消订单</view>
+        <view class="action-btn primary" wx:if="{{item.status === 'pending'}}" catchtap="goPay" data-id="{{item._id}}">去支付</view>
+        <view class="action-btn" wx:if="{{item.status === 'paid'}}" catchtap="confirmOrder" data-id="{{item._id}}">确认入住</view>
       </view>
     </view>
   </view>

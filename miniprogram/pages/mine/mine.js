@@ -11,7 +11,11 @@ Page({
       historyCount: history.length
     })
   },
-  goOrders(e) { wx.switchTab({ url: '/pages/order/order?status=' + (e.currentTarget.dataset.status || 'all') }) },
+  goOrders(e) {
+    const status = e.currentTarget.dataset.status || 'all'
+    wx.setStorageSync('order_tab_status', status)
+    wx.switchTab({ url: '/pages/order/order' })
+  },
   goAddress() { wx.navigateTo({ url: '/pages/address/address' }) },
   goCart() { wx.navigateTo({ url: '/pages/cart/cart' }) },
   goFavorites() { wx.navigateTo({ url: '/pages/favorites/favorites' }) },

@@ -20,10 +20,15 @@ Page({
     if (options.status) {
       this.setData({ currentTab: options.status })
     }
+    // 从 storage 读取状态（wx.switchTab 不支持 query）
+    const savedStatus = wx.getStorageSync('order_tab_status')
+    if (savedStatus) {
+      this.setData({ currentTab: savedStatus })
+      wx.removeStorageSync('order_tab_status')
+    }
     // 检查是否已订阅过
     const hasSubscribed = wx.getStorageSync('order_subscribed')
     this.setData({ showSubscribe: !hasSubscribed })
-    this.loadOrders(true)
   },
 
   onShow() {
