@@ -1,5 +1,18 @@
-// pages/order-detail/order-detail.js
 const db = wx.cloud.database()
+
+function formatTime(date) {
+  if (!date) return ''
+  const d = new Date(date)
+  if (isNaN(d.getTime())) return String(date)
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  const h = String(d.getHours()).padStart(2, '0')
+  const min = String(d.getMinutes()).padStart(2, '0')
+  const s = String(d.getSeconds()).padStart(2, '0')
+  return `${y}-${m}-${day} ${h}:${min}:${s}`
+}
+
 Page({
   data: {
     order: {},
@@ -7,7 +20,9 @@ Page({
       pending: '待支付', paid: '已支付', completed: '已完成',
       cancelled: '已取消', rejected: '已拒绝', refunded: '已退款'
     },
-    canReview: false
+    canReview: false,
+    createdAtStr: '',
+    paidAtStr: ''
   },
 
   onLoad(options) { this.loadOrder(options.id) },
@@ -16,11 +31,13 @@ Page({
     wx.showLoading({ title: '加载中' })
     try {
       const res = await db.collection('orders').doc(id).get()
-      this.setData({ order: res.data })
-      // 检查是否可评价
-      if (res.data.status === 'completed' && !res.data.hasReviewed) {
-        this.setData({ canReview: true })
-      }
+      const order = res.data
+      this.setData({
+        order,
+        createdAtStr: formatTime(order.createdAt),
+        paidAtStr: order.paidAt ? formatTime(order.paidAt) : '',
+        canReview: order.status === 'completed' && !order.hasReviewed
+      })
     } catch (e) {
       wx.showToast({ title: '加载失败', icon: 'none' })
     }
@@ -37,13 +54,35 @@ Page({
     } catch (e) { wx.showToast({ title: '操作失败', icon: 'none' }) }
   },
 
+  // 支付已有订单（不再创建新订单）
   async goPay() {
     const order = this.data.order
-    const orderData = encodeURIComponent(JSON.stringify({
-      type: order.type, storeId: order.storeId, storeName: order.storeName,
-      totalPrice: order.totalPrice, coverImage: order.coverImage
-    }))
-    wx.navigateTo({ url: `/pages/order-confirm/order-confirm?data=${orderData}` })
+    wx.showModal({
+      title: '确认支付',
+      content: `支付 ¥${order.totalPrice}？`,
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          wx.showLoading({ title: '支付中...' })
+          await wx.cloud.callFunction({
+            name: 'pay',
+            data: {
+              action: 'unifiedOrder',
+              body: `${order.storeName} - 订单`,
+              orderNo: order.orderNo,
+              totalFee: Math.round(order.totalPrice * 100),
+              orderId: order._id
+            }
+          })
+          wx.hideLoading()
+          wx.showToast({ title: '支付成功', icon: 'success' })
+          this.loadOrder(order._id)
+        } catch (e) {
+          wx.hideLoading()
+          wx.showToast({ title: '支付失败', icon: 'none' })
+        }
+      }
+    })
   },
 
   async confirmOrder() {

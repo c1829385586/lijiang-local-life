@@ -32,7 +32,7 @@
         <view class="order-info">
           <text class="order-name">{{item.roomName || item.storeName}}</text>
           <text class="order-no">订单号：{{item.orderNo}}</text>
-          <text class="order-time">{{item.createdAt}}</text>
+          <text class="order-time">{{item.createdAtStr}}</text>
         </view>
         <text class="price">{{item.totalPrice}}</text>
       </view>

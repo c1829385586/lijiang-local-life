@@ -35,25 +35,28 @@ Page({
 
   async loadData() {
     const app = getApp()
-    const merchantId = app.globalData.merchantInfo?._id
-    if (!merchantId) return
+    const merchant = app.globalData.merchantInfo
+    if (!merchant) return
+
+    // 使用 storeId 查询订单，而非 merchant._id
+    const storeId = merchant.storeId || merchant._id
+    if (!storeId) return
 
     try {
-      // 今日统计
       const today = new Date()
       today.setHours(0, 0, 0, 0)
 
       const [ordersToday, pendingOrders, allOrders] = await Promise.all([
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           createdAt: _.gte(today)
         }).count(),
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           status: 'pending'
         }).orderBy('createdAt', 'desc').limit(5).get(),
         db.collection('orders').where({
-          storeId: merchantId,
+          storeId: storeId,
           createdAt: _.gte(today)
         }).get()
       ])
@@ -67,7 +70,7 @@ Page({
           orderCount: ordersToday.total,
           revenue: revenue.toFixed(2),
           pendingCount: pendingOrders.data.length,
-          viewCount: 0 // 待接入统计
+          viewCount: 0
         },
         pendingOrders: pendingOrders.data
       })
@@ -104,7 +107,7 @@ Page({
 
   // 订阅新订单通知
   subscribeNewOrder() {
-    const tmplId = 'TMPL_NEW_ORDER' // 替换为实际模板ID
+    const tmplId = 'TMPL_NEW_ORDER'
 
     wx.requestSubscribeMessage({
       tmplIds: [tmplId],
@@ -126,7 +129,6 @@ Page({
     })
   },
 
-  // 关闭订阅横幅
   closeSubscribe() {
     wx.setStorageSync('merchant_subscribed', true)
     this.setData({ showSubscribe: false })

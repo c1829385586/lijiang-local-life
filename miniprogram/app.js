@@ -2,6 +2,7 @@ App({
   globalData: {
     userInfo: null,
     location: null,
+    openid: null,
     merchantInfo: null,
     isMerchantLogin: false
   },
@@ -18,6 +19,9 @@ App({
     // 获取用户位置
     this.getLocation()
 
+    // 自动登录
+    this.login()
+
     // 检查商户登录状态
     this.checkMerchantLogin()
   },
@@ -32,17 +36,27 @@ App({
         }
       },
       fail: () => {
-        console.warn('获取位置失败')
+        console.warn('获取位置失败，使用默认丽江坐标')
+        // 默认丽江古城坐标
+        this.globalData.location = {
+          latitude: 26.8721,
+          longitude: 100.2299
+        }
       }
     })
   },
 
   // 全局登录
   async login() {
-    const { result } = await wx.cloud.callFunction({ name: 'login' })
-    this.globalData.openid = result.openid
-    this.globalData.userInfo = result.userInfo
-    return result
+    try {
+      const { result } = await wx.cloud.callFunction({ name: 'login' })
+      if (result && result.code === 0) {
+        this.globalData.openid = result.openid
+        this.globalData.userInfo = result.userInfo
+      }
+    } catch (e) {
+      console.error('登录失败:', e)
+    }
   },
 
   // 检查商户登录状态

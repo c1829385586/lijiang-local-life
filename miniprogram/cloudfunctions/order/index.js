@@ -80,11 +80,24 @@ async function createOrder(orderData, openid) {
       }
     })
 
+    const payResult = payment.result || {}
+
+    // 模拟支付：订单已被 pay 云函数标记为已支付
+    if (payResult.mock) {
+      return {
+        code: 0,
+        orderId: result._id,
+        orderNo,
+        payment: { mock: true }
+      }
+    }
+
+    // 真实微信支付
     return {
       code: 0,
       orderId: result._id,
       orderNo,
-      payment: payment.result.payment
+      payment: payResult.payment
     }
   } catch (e) {
     console.error('支付下单失败', e)

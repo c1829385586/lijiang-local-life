@@ -83,6 +83,34 @@
     </view>
   </view>
 
+  <!-- 日期选择 + 已选房型 -->
+  <view class="card">
+    <text class="card-title">入住日期</text>
+    <view class="date-row">
+      <view class="date-item">
+        <text class="date-label">入住</text>
+        <picker mode="date" value="{{checkInDate}}" start="{{checkInDate}}" bindchange="onDateChange" data-type="in">
+          <text class="date-value">{{checkInDate}}</text>
+        </picker>
+      </view>
+      <view class="date-nights">
+        <text>{{nights}}晚</text>
+      </view>
+      <view class="date-item">
+        <text class="date-label">退房</text>
+        <picker mode="date" value="{{checkOutDate}}" start="{{checkInDate}}" bindchange="onDateChange" data-type="out">
+          <text class="date-value">{{checkOutDate}}</text>
+        </picker>
+      </view>
+    </view>
+    <view class="selected-room" wx:if="{{selectedRoom}}">
+      <text class="selected-label">已选房型：</text>
+      <text class="selected-name">{{selectedRoom.name}}</text>
+      <text class="price" style="margin-left:12rpx">{{selectedRoom.price}}</text>
+      <text style="font-size:22rpx;color:#999">/晚</text>
+    </view>
+  </view>
+
   <!-- 周边美食/特产（送到房间） -->
   <view class="card">
     <text class="card-title">🍜 周边美食送到房间</text>

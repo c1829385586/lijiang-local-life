@@ -1,4 +1,16 @@
-// pages/order/order.js
+// utils/date.js helper embedded
+function formatTime(date) {
+  if (!date) return ''
+  const d = new Date(date)
+  if (isNaN(d.getTime())) return String(date)
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  const h = String(d.getHours()).padStart(2, '0')
+  const min = String(d.getMinutes()).padStart(2, '0')
+  return `${y}-${m}-${day} ${h}:${min}`
+}
+
 Page({
   data: {
     orders: [],
@@ -66,9 +78,15 @@ Page({
         }
       })
 
-      const orders = refresh ? result.data : [...this.data.orders, ...result.data]
+      // 格式化时间
+      const orders = (result.data || []).map(o => ({
+        ...o,
+        createdAtStr: formatTime(o.createdAt)
+      }))
+
+      const allOrders = refresh ? orders : [...this.data.orders, ...orders]
       this.setData({
-        orders,
+        orders: allOrders,
         page: page + 1,
         hasMore: result.hasMore,
         loading: false
@@ -101,24 +119,44 @@ Page({
     }
   },
 
-  goPay(e) {
+  // 支付已有订单（模拟支付直接标记为已支付）
+  async goPay(e) {
     const id = e.currentTarget.dataset.id
     const order = this.data.orders.find(o => o._id === id)
     if (!order) return
 
-    const orderData = encodeURIComponent(JSON.stringify({
-      type: order.type,
-      storeId: order.storeId,
-      storeName: order.storeName,
-      totalPrice: order.totalPrice,
-      coverImage: order.coverImage
-    }))
-    wx.navigateTo({ url: `/pages/order-confirm/order-confirm?data=${orderData}` })
+    wx.showModal({
+      title: '确认支付',
+      content: `支付 ¥${order.totalPrice}？`,
+      success: async (res) => {
+        if (!res.confirm) return
+        try {
+          wx.showLoading({ title: '支付中...' })
+          // 模拟支付：直接调用 pay 云函数
+          await wx.cloud.callFunction({
+            name: 'pay',
+            data: {
+              action: 'unifiedOrder',
+              body: `${order.storeName} - 订单`,
+              orderNo: order.orderNo,
+              totalFee: Math.round(order.totalPrice * 100),
+              orderId: order._id
+            }
+          })
+          wx.hideLoading()
+          wx.showToast({ title: '支付成功', icon: 'success' })
+          this.loadOrders(true)
+        } catch (e) {
+          wx.hideLoading()
+          wx.showToast({ title: '支付失败', icon: 'none' })
+        }
+      }
+    })
   },
 
   async confirmOrder(e) {
     const id = e.currentTarget.dataset.id
-    const res = await wx.showModal({ title: '确认入住', content: '确认已入住？' })
+    const res = await wx.showModal({ title: '确认入住', content: '确认已入住/收货？' })
     if (!res.confirm) return
 
     try {

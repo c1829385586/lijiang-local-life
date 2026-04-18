@@ -67,6 +67,7 @@ Page({
         name: item.name,
         coverImage: item.coverImage,
         price: item.price,
+        storeId: item.storeId, // 保留 storeId 以便关联商户
         canDeliverToRoom: item.canDeliverToRoom,
         quantity,
         checked: true
@@ -79,7 +80,7 @@ Page({
     const { item, quantity } = this.data
     const orderData = encodeURIComponent(JSON.stringify({
       type: 'product',
-      storeId: item._id,
+      storeId: item.storeId || item._id, // 优先使用商品关联的 storeId
       storeName: item.name,
       productName: item.name,
       coverImage: item.coverImage,

@@ -88,6 +88,19 @@ Page({
     }
   },
 
+  onBannerTap(e) {
+    const url = e.currentTarget.dataset.url
+    if (!url) return
+    // 支持跳转到内部页面
+    if (url.startsWith('/pages/')) {
+      if (url.includes('/pages/hotel/') || url.includes('/pages/food/') || url.includes('/pages/mine/')) {
+        wx.switchTab({ url })
+      } else {
+        wx.navigateTo({ url })
+      }
+    }
+  },
+
   onCategoryTap(e) {
     const page = e.currentTarget.dataset.page
     const isTab = e.currentTarget.dataset.tab

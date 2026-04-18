@@ -35,8 +35,24 @@ Page({
       if (keyword) {
         query = query.where({ name: db.RegExp({ regexp: keyword, options: 'i' }) })
       }
-      const sortField = sortBy === 'score' ? 'score' : sortBy === 'distance' ? 'latitude' : 'minPrice'
-      const sortDir = sortBy === 'price_asc' ? 'asc' : 'desc'
+
+      // 排序逻辑
+      let sortField = 'score'
+      let sortDir = 'desc'
+      if (sortBy === 'score') {
+        sortField = 'score'
+        sortDir = 'desc'
+      } else if (sortBy === 'price_asc') {
+        sortField = 'minPrice'
+        sortDir = 'asc'
+      } else if (sortBy === 'price_desc') {
+        sortField = 'minPrice'
+        sortDir = 'desc'
+      } else if (sortBy === 'distance') {
+        sortField = 'score' // 云数据库不支持距离排序，按评分兜底
+        sortDir = 'desc'
+      }
+
       const countR = await query.count()
       const res = await query.orderBy(sortField, sortDir).skip((page - 1) * pageSize).limit(pageSize).get()
 

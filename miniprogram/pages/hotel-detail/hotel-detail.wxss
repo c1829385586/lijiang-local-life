@@ -21,6 +21,16 @@
 .room-stock { font-size: 22rpx; color: #4CD964; }
 .room-stock.sold-out { color: #999; }
 
+/* 日期选择 */
+.date-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8rpx; }
+.date-item { flex: 1; }
+.date-label { font-size: 22rpx; color: #999; display: block; }
+.date-value { font-size: 28rpx; font-weight: bold; color: #333; padding: 12rpx 0; display: block; border-bottom: 2rpx solid #FF6B35; }
+.date-nights { padding: 0 30rpx; font-size: 24rpx; color: #FF6B35; }
+.selected-room { margin-top: 16rpx; padding-top: 16rpx; border-top: 1rpx solid #f0f0f0; display: flex; align-items: center; }
+.selected-label { font-size: 24rpx; color: #999; }
+.selected-name { font-size: 26rpx; font-weight: bold; }
+
 /* 评价 */
 .review-count { font-size: 24rpx; color: #999; margin-left: 8rpx; }
 .review-avg { font-size: 24rpx; color: #FF9500; }
