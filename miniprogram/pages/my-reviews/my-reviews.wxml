@@ -10,7 +10,7 @@
         <text class="menu-arrow">›</text>
       </view>
       <view class="flex" style="margin:12rpx 0">
-        <text class="review-stars">{{'⭐'.repeat(item.rating)}}</text>
+        <text class="review-stars">{{item.rating}}⭐</text>
         <text class="review-time">{{item.createdAt}}</text>
       </view>
       <text class="review-content">{{item.content}}</text>

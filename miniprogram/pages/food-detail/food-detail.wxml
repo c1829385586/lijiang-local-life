@@ -62,7 +62,7 @@
           <image class="review-avatar" src="{{item.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"/>
           <view class="review-meta">
             <text class="review-name">{{item.nickName || '匿名用户'}}</text>
-            <text class="review-stars">{{'⭐'.repeat(item.rating)}}</text>
+            <text class="review-stars">{{item.rating}}⭐</text>
           </view>
         </view>
         <text class="review-content">{{item.content}}</text>

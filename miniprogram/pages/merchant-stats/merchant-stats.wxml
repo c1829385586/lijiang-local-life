@@ -28,7 +28,7 @@
     <text class="card-title">每日趋势</text>
     <view class="chart-list">
       <view class="chart-item" wx:for="{{stats.dailyStats || []}}" wx:key="date">
-        <text class="chart-date">{{item.date.slice(5)}}</text>
+        <text class="chart-date">{{item.date}}</text>
         <view class="chart-bar-wrap">
           <view class="chart-bar" style="width: {{item.orders / maxOrders * 100}}%"></view>
         </view>
